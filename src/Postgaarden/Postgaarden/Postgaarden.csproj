@@ -68,6 +68,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Crud\Persons\SqliteCustomerCrud.cs" />
+    <Compile Include="Crud\Persons\SqliteEmployeeCrud.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -83,6 +85,10 @@
     <Compile Include="Crud\Equipments\SqliteEquipmentCrud.cs" />
     <Compile Include="Crud\Rooms\RoomCrud.cs" />
     <Compile Include="Crud\Rooms\SqliteRoomCrud.cs" />
+    <Compile Include="Model\Persons\Customer.cs" />
+    <Compile Include="Crud\Persons\CustomerCrud.cs" />
+    <Compile Include="Model\Persons\Employee.cs" />
+    <Compile Include="Crud\Persons\EmployeeCrud.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -93,6 +99,7 @@
     <Compile Include="Model\Rooms\ConferenceRoom.cs" />
     <Compile Include="Model\Rooms\Room.cs" />
     <Compile Include="Model\Rooms\RoomHandler.cs" />
+    <Compile Include="Model\Persons\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -4,36 +4,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Postgaarden
+namespace Postgaarden.Model.Persons
 {
-    public abstract class Person
+    public class Customer : Person
     {
-        private string name;
-        private string emailaddress;
+        private string cvr;
+        private string companyName;
 
-        public string Name
+        public string Cvr
         {
             get
             {
-                return name;
+                return cvr;
             }
             set
             {
-                name = value;
+                cvr = value;
             }
         }
 
-
-        public string EmailAddress
+        public string CompanyName
         {
             get
             {
-                return emailaddress;
+                return companyName;
             }
             set
             {
-                emailaddress = value;
+                companyName = value;
             }
         }
+
     }
 }
+

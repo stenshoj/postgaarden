@@ -3,6 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Postgaarden;
 using System.Linq;
+using Postgaarden.Model.Persons;
+using Postgaarden.Connection;
+using Postgaarden.Crud.Persons;
 
 namespace PostgaardenUnitTest
 {
@@ -44,7 +47,17 @@ namespace PostgaardenUnitTest
         [TestMethod]
         public void TestReadOneEmployee()
         {
+            var mock = new Mock<DatabaseConnection>();
+            var crud = new SqliteEmployeeCrud(mock.Object);
 
+            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Returns(() => new object[][]
+            {new object [] {1,"Jessie", "Jessie@mail.com"}});
+
+            var employee = crud.Read(1);
+
+            Assert.AreEqual(1, employee.Id);
+            Assert.AreEqual("Jessie", employee.Name);
+            Assert.AreEqual("Jessie@mail.com", employee.EmailAddress);
         }
     }
 }

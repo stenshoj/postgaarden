@@ -3,6 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Postgaarden;
 using System.Linq;
+using Postgaarden.Model.Persons;
+using Postgaarden.Connection;
+using Postgaarden.Crud.Persons;
 
 namespace PostgaardenUnitTest
 {
@@ -56,7 +59,9 @@ namespace PostgaardenUnitTest
             var customer = crud.Read("");
 
             Assert.AreEqual("merch", customer.CompanyName);
-            //Assert.AreEqual
+            Assert.AreEqual("jens", customer.Name);
+            Assert.AreEqual("97865467", customer.Cvr);
+            Assert.AreEqual("thismail@mail.com", customer.EmailAddress);
         }
     }
 }

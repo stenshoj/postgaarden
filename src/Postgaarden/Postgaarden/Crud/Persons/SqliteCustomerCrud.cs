@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Postgaarden.Connection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Postgaarden.Model.Persons;
 
-namespace Postgaarden
+namespace Postgaarden.Crud.Persons
 {
     public class SqliteCustomerCrud : CustomerCrud
     {
@@ -51,10 +53,16 @@ namespace Postgaarden
 
         public override Customer Read(string key)
         {
-            DBConnection.ExecuteQuery("SELECT * FROM Customer WHERE Cvr = Customer.First().Cvr");
-            return new Customer();
+            var customer = DBConnection.ExecuteQuery("SELECT CompanyName, Name, Cvr, EmailAddress FROM Customer WHERE Cvr = "+key+"");
+            return new Customer
+            {
+                CompanyName = customer.First().ElementAt(0).ToString(),
+                Name = customer.First().ElementAt(1).ToString(),
+                Cvr = customer.First().ElementAt(2).ToString(),
+                EmailAddress = customer.First().ElementAt(3).ToString()
+            };
         }
-
+        
         public override void Update(Customer entry)
         {
 

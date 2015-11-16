@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Postgaarden
+namespace Postgaarden.Model.Persons
 {
     public class Employee : Person
     {
