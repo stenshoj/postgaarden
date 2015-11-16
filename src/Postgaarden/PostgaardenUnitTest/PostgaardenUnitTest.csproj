@@ -56,9 +56,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="SqliteBookingCrudUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BookingUnitTest.cs" />
+=======
+    <Compile Include="ConferenceRoomUnitTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoomData.cs" />
+    <Compile Include="RoomHandlerUnitTest.cs" />
+    <Compile Include="SqliteRoomCrudUnitTest.cs" />
+>>>>>>> 78170c1f34a52149402a494c7c490db64f75c67d
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Postgaarden\Postgaarden.csproj">

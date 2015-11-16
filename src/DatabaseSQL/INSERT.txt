@@ -1,0 +1,4 @@
+--Fill dummy data into Booking table
+INSERT INTO Booking(StartTime, EndTime, Price, ConferenceRoomId, CustomerCVR, EmployeeId)VALUES('2015-01-01 08:00', '2015-01-01 10:00', 399, 666, '88888888', 1);
+INSERT INTO Booking(StartTime, EndTime, Price, ConferenceRoomId, CustomerCVR, EmployeeId)VALUES('2015-02-01 08:00', '2015-02-01 11:00', 500, 777, '12345678', 3);
+INSERT INTO Booking(StartTime, EndTime, Price, ConferenceRoomId, CustomerCVR, EmployeeId)VALUES('2015-12-01 12:00', '2015-12-01 18:00', 879, 123, '87654321', 2);
