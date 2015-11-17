@@ -68,6 +68,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Crud\Persons\SqliteCustomerCrud.cs" />
+    <Compile Include="Crud\Persons\SqliteEmployeeCrud.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,12 +78,28 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Crud\Crud.cs" />
+    <Compile Include="Connection\DatabaseConnection.cs" />
+    <Compile Include="Connection\Sqlite\SqliteDatabaseConnection.cs" />
+    <Compile Include="Crud\Equipments\EquipmentCrud.cs" />
+    <Compile Include="Crud\Equipments\SqliteEquipmentCrud.cs" />
+    <Compile Include="Crud\Rooms\RoomCrud.cs" />
+    <Compile Include="Crud\Rooms\SqliteRoomCrud.cs" />
+    <Compile Include="Model\Persons\Customer.cs" />
+    <Compile Include="Crud\Persons\CustomerCrud.cs" />
+    <Compile Include="Model\Persons\Employee.cs" />
+    <Compile Include="Crud\Persons\EmployeeCrud.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Equipments\Equipment.cs" />
+    <Compile Include="Model\Rooms\ConferenceRoom.cs" />
+    <Compile Include="Model\Rooms\Room.cs" />
+    <Compile Include="Model\Rooms\RoomHandler.cs" />
+    <Compile Include="Model\Persons\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -109,6 +127,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.98.1\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.98.1\build\net451\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
