@@ -105,7 +105,45 @@ namespace PostgaardenUnitTest
             mock.Verify(x => x.ExecuteQuery(It.IsAny<string>()));
 
             Assert.AreEqual("DELETE FROM Customer WHERE Cvr=" + customer.Cvr + "", sql);
-
         }
+
+        #region Developed By Chris
+        [TestMethod]
+        public void TestReadBookingToSql()
+        {
+            string stringToTest =
+                "SELECT Cvr, Name, CompanyName, EmailAddress FROM Customer AS c " +
+                "JOIN Booking AS b ON c.Cvr = b.CustumerCVR " + 
+                "WHERE b.Id = 1;";
+            string sql = "";
+
+            var mock = new Mock<DatabaseConnection>();
+            var crud = new SqliteCustomerCrud(mock.Object);
+
+            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Callback((string s) => sql = s);
+
+            crud.Read(new Booking { Id = 1 });
+
+            Assert.AreEqual(stringToTest, sql);
+        }
+
+        [TestMethod]
+        public void TestReadBookingParse()
+        {
+            var mock = new Mock<DatabaseConnection>();
+            var crud = new SqliteCustomerCrud(mock.Object);
+
+            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>()))
+                .Returns(new[] { new object[] { "12345678", "Lone Wolf", "Wolfgang", "Lone@Wolf.dk" } });
+
+            var customer = crud.Read(new Booking());
+
+            Assert.AreEqual("12345678", customer.Cvr);
+            Assert.AreEqual("Long Wolf", customer.Name);
+            Assert.AreEqual("Wolf inc", customer.CompanyName);
+            Assert.AreEqual("Lone@Wolf.dk", customer.EmailAddress);
+        }
+
+        #endregion
     }
 }
