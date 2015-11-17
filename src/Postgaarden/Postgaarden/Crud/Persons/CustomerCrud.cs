@@ -10,5 +10,6 @@ namespace Postgaarden.Crud.Persons
 {
     public abstract class CustomerCrud: Crud <Customer, string>
     {
+        public abstract Customer Read(Booking booking);
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Postgaarden.Model.Persons;
+using Postgaarden.Model.Rooms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +11,8 @@ namespace Postgaarden
     public class Booking
     {
         private double price;
-        private DateTime starttime;
-        private DateTime endtime;
 
-        public int id
+        public int Id
         {
             get;
             set;
@@ -20,34 +20,14 @@ namespace Postgaarden
 
         public DateTime StartTime
         {
-            get
-            {
-                return starttime;
-            }
-            set
-            {
-                if (starttime > endtime)
-                {
-                    throw new ArgumentOutOfRangeException("StartTime can not be later than the EndTime");
-                }
-                starttime = value;
-            }
+            get;
+            set;
         }
 
         public DateTime EndTime
         {
-            get
-            {
-                return endtime;
-            }
-            set
-            {
-                if(endtime < starttime)
-                {
-                    throw new ArgumentOutOfRangeException("StartTime can not be later than the EndTime");
-                }
-                endtime = value;
-            }
+            get;
+            set;
         }
 
         public Room Room
@@ -82,6 +62,24 @@ namespace Postgaarden
                 }
                 price = value;
             }
+        }
+
+        public Booking()
+        {
+            StartTime = new DateTime();
+            EndTime = new DateTime();
+        }
+
+        public Boolean SetTime(DateTime startTime, DateTime endTime)
+        {
+            if (startTime <= endTime)
+            {
+                this.StartTime = startTime;
+                this.EndTime = endTime;
+
+                return true;
+            }
+            return false;
         }
     }
 }

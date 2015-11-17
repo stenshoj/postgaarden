@@ -47,6 +47,11 @@ namespace Postgaarden.Crud.Persons
             return employees;
         }
 
+        public override Employee Read(Booking booking)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Employee Read(int key)
         {
             var employee = DBConnection.ExecuteQuery("SELECT Id, Name, EmailAddress FROM Employee WHERE Id="+key+"");

@@ -72,20 +72,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-<<<<<<< HEAD
-    <Compile Include="BookingCrud.cs" />
-    <Compile Include="Crud.cs" />
-    <Compile Include="Customer.cs" />
-    <Compile Include="DatabaseConnection.cs" />
-    <Compile Include="Employee.cs" />
-    <Compile Include="Equipment.cs" />
-    <Compile Include="Person.cs" />
-    <Compile Include="Room.cs" />
-    <Compile Include="SqliteBookingCrud.cs" />
-=======
+    <Compile Include="Crud\Bookings\BookingCrud.cs" />
+    <Compile Include="Crud\Bookings\SqliteBookingCrud.cs" />
     <Compile Include="Crud\Persons\SqliteCustomerCrud.cs" />
     <Compile Include="Crud\Persons\SqliteEmployeeCrud.cs" />
->>>>>>> develop
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -94,10 +84,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-<<<<<<< HEAD
-    <Compile Include="Booking.cs" />
-=======
->>>>>>> develop
+    <Compile Include="Model\Bookings\Booking.cs" />
     <Compile Include="Crud\Crud.cs" />
     <Compile Include="Connection\DatabaseConnection.cs" />
     <Compile Include="Connection\Sqlite\SqliteDatabaseConnection.cs" />
@@ -105,13 +92,10 @@
     <Compile Include="Crud\Equipments\SqliteEquipmentCrud.cs" />
     <Compile Include="Crud\Rooms\RoomCrud.cs" />
     <Compile Include="Crud\Rooms\SqliteRoomCrud.cs" />
-<<<<<<< HEAD
-=======
     <Compile Include="Model\Persons\Customer.cs" />
     <Compile Include="Crud\Persons\CustomerCrud.cs" />
     <Compile Include="Model\Persons\Employee.cs" />
     <Compile Include="Crud\Persons\EmployeeCrud.cs" />
->>>>>>> develop
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -122,10 +106,7 @@
     <Compile Include="Model\Rooms\ConferenceRoom.cs" />
     <Compile Include="Model\Rooms\Room.cs" />
     <Compile Include="Model\Rooms\RoomHandler.cs" />
-<<<<<<< HEAD
-=======
     <Compile Include="Model\Persons\Person.cs" />
->>>>>>> develop
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

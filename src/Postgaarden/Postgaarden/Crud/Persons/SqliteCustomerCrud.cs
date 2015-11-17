@@ -51,6 +51,11 @@ namespace Postgaarden.Crud.Persons
             //                        new Customer { EmailAddress = rows.ElementAt(3).First().ToString() }};
         }
 
+        public override Customer Read(Booking booking)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Customer Read(string key)
         {
             var customer = DBConnection.ExecuteQuery("SELECT CompanyName, Name, Cvr, EmailAddress FROM Customer WHERE Cvr = "+key+"");

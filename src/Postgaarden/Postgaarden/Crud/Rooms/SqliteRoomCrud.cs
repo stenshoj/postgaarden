@@ -88,6 +88,11 @@ namespace Postgaarden.Crud.Rooms
         //    }
         }
 
+        public override Room Read(Booking booking)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Reads this instance.
         /// </summary>
