@@ -1,4 +1,5 @@
 ﻿using Postgaarden.Model.Equipments;
+using Postgaarden.Model.Rooms;
 using System;
 using System.Collections.Generic;
 using System.Linq;

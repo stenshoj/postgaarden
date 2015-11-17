@@ -12,6 +12,8 @@ namespace PostgaardenUnitTest
     [TestClass]
     public class Sql
     {
+        //Created by Jens Kloster
+
         [TestMethod]
         public void TestCreateToSql()
         {
@@ -20,6 +22,7 @@ namespace PostgaardenUnitTest
             var mock = new Mock<DatabaseConnection>();
             var crud = new SqliteCustomerCrud(mock.Object);
 
+            //Execute query calls back the string sql containing the string from SqliteCustomerCrud
             mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Callback((string s) => sql = s);
 
             crud.Create(person);
@@ -36,7 +39,8 @@ namespace PostgaardenUnitTest
             var mock = new Mock<DatabaseConnection>();
             var crud = new SqliteCustomerCrud(mock.Object);
 
-            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Returns(() => new object[][] 
+            //ExecuteQuery returns an 2d array of objects, simulating a single entry in the table Customer
+            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Returns(() => new object[][]
             {new object [] {"merch", "jens", "97865467", "thismail@mail.com" } });
 
             var customers = crud.Read();
@@ -53,15 +57,55 @@ namespace PostgaardenUnitTest
             var mock = new Mock<DatabaseConnection>();
             var crud = new SqliteCustomerCrud(mock.Object);
 
-            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Returns(() => new object[][] 
+            //ExecuteQuery returns an 2d array of objects, simulating a single entry in the table Customer
+            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Returns(() => new object[][]
             {new object [] {"merch", "jens", "97865467", "thismail@mail.com" } });
 
             var customer = crud.Read("");
 
             Assert.AreEqual("merch", customer.CompanyName);
+            //Assert.AreEqual
             Assert.AreEqual("jens", customer.Name);
             Assert.AreEqual("97865467", customer.Cvr);
             Assert.AreEqual("thismail@mail.com", customer.EmailAddress);
+        }
+        [TestMethod]
+        public void TestUpdateCustomer()
+        {
+            string sql = "";
+            var customer = new Customer { CompanyName = "merch", Name = "Sarah", Cvr = "12345678", EmailAddress = "Sarah@mail.com" };
+            var mock = new Mock<DatabaseConnection>();
+            var crud = new SqliteCustomerCrud(mock.Object);
+
+            //Execute query calls back the string sql containing the string from SqliteCustomerCrud
+            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Callback((string s) => sql = s);
+
+            crud.Update(customer);
+
+            //Is used to force the SqliteCustomerCrud to use the Executequery (DBConnection.ExecuteQuery)
+            mock.Verify(x => x.ExecuteQuery(It.IsAny<string>()));
+
+            Assert.AreEqual($"UPDATE Customer SET CompanyName={customer.CompanyName}, Name={customer.Name}, EmailAddress={customer.EmailAddress} WHERE Cvr={customer.Cvr}",sql);
+        }
+
+        [TestMethod]
+        public void TestDeleteCustomer()
+        {
+            string sql = "";
+            var customer = new Customer { CompanyName = "merch", Name = "Sarah", Cvr = "12345678", EmailAddress = "Sarah@mail.com" };
+            var mock = new Mock<DatabaseConnection>();
+            var crud = new SqliteCustomerCrud(mock.Object);
+
+            //Execute query calls back the string sql containing the string from SqliteCustomerCrud
+            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Callback((string s) => sql = s);
+
+            crud.Delete(customer);
+
+            //Is used to force the SqliteCustomerCrud to use the Executequery (DBConnection.ExecuteQuery)
+            mock.Verify(x => x.ExecuteQuery(It.IsAny<string>()));
+
+            Assert.AreEqual("DELETE FROM Customer WHERE Cvr=" + customer.Cvr + "", sql);
+
         }
     }
 }

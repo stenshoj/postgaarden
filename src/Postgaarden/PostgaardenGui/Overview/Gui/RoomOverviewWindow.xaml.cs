@@ -21,10 +21,10 @@ namespace PostgaardenGui.Overview.Gui
     /// </summary>
     public partial class RoomOverviewWindow : Window
     {
-        RoomHandler roomHandler = new RoomHandler();
+        //RoomHandler roomHandler = new RoomHandler();
 
         public ObservableCollection<string> EquipmentFiltlerObservableCollection { get; set; } = new ObservableCollection<string>();
-        public ObservableCollection<Room> RoomObservableCollection { get; set; } = new ObservableCollection<Room>();
+        //public ObservableCollection<Room> RoomObservableCollection { get; set; } = new ObservableCollection<Room>();
 
         public RoomOverviewWindow()
         {
@@ -61,10 +61,10 @@ namespace PostgaardenGui.Overview.Gui
         private void SearchEquipmentButton_OnClick(object sender, RoutedEventArgs e)
         {
             var size = SetSizeTextBox.Text.Equals("") ? "0" : SetSizeTextBox.Text;
-            var sizeRooms = new List<Room>(roomHandler.Filter(Convert.ToInt32(size), SetMinimumCheckBox.IsChecked ?? true));
-            var equipmentRooms = new List<Room>(roomHandler.Filter(EquipmentFiltlerObservableCollection));
-            RoomObservableCollection = new ObservableCollection<Room>(sizeRooms.Intersect(equipmentRooms));
-            RoomListBox.ItemsSource = RoomObservableCollection;
+            //var sizeRooms = new List<Room>(roomHandler.Filter(Convert.ToInt32(size), SetMinimumCheckBox.IsChecked ?? true));
+            //var equipmentRooms = new List<Room>(roomHandler.Filter(EquipmentFiltlerObservableCollection));
+            //RoomObservableCollection = new ObservableCollection<Room>(sizeRooms.Intersect(equipmentRooms));
+            //RoomListBox.ItemsSource = RoomObservableCollection;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Postgaarden.Connection;
 using Postgaarden.Model.Equipments;
 using Postgaarden.Model.Rooms;
+using Postgaarden.Connection;
 
 namespace Postgaarden.Crud.Equipments
 {

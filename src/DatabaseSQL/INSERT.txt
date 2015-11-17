@@ -1,4 +1,73 @@
---Fill dummy data into Booking table
+-- Fill dummy data into Booking table
+-- Created by Christoffer
 INSERT INTO Booking(StartTime, EndTime, Price, ConferenceRoomId, CustomerCVR, EmployeeId)VALUES('2015-01-01 08:00', '2015-01-01 10:00', 399, 666, '88888888', 1);
 INSERT INTO Booking(StartTime, EndTime, Price, ConferenceRoomId, CustomerCVR, EmployeeId)VALUES('2015-02-01 08:00', '2015-02-01 11:00', 500, 777, '12345678', 3);
 INSERT INTO Booking(StartTime, EndTime, Price, ConferenceRoomId, CustomerCVR, EmployeeId)VALUES('2015-12-01 12:00', '2015-12-01 18:00', 879, 123, '87654321', 2);
+
+
+-- Created by Morten C.
+-- Static data for ConferenceRoom table
+INSERT INTO ConferenceRoom(Id, Capacity)VALUES(1, 8);
+INSERT INTO ConferenceRoom(Id, Capacity)VALUES(2, 6);
+INSERT INTO ConferenceRoom(Id, Capacity)VALUES(3, 10);
+INSERT INTO ConferenceRoom(Id, Capacity)VALUES(4, 20);
+INSERT INTO ConferenceRoom(Id, Capacity)VALUES(5, 12);
+INSERT INTO ConferenceRoom(Id, Capacity)VALUES(6, 7);
+INSERT INTO ConferenceRoom(Id, Capacity)VALUES(7, 16);
+INSERT INTO ConferenceRoom(Id, Capacity)VALUES(8, 6);
+
+
+-- Created by Morten C.
+-- Static data for Employee table 
+INSERT INTO Employee(Id, Name, Email)VALUES(1, 'Natsu', 'Natsu@postgaarden.dk');
+INSERT INTO Employee(Id, Name, Email)VALUES(2, 'Lucy', 'Lucy@postgaarden.dk');
+INSERT INTO Employee(Id, Name, Email)VALUES(3, 'Gray', 'Gray@postgaarden.dk');
+INSERT INTO Employee(Id, Name, Email)VALUES(4, 'Erza', 'Erza@postgaarden.dk');
+INSERT INTO Employee(Id, Name, Email)VALUES(5, 'Gajeel', 'Natsu@postgaarden.dk');
+INSERT INTO Employee(Id, Name, Email)VALUES(6, 'Laxus', 'Laxus@postgaarden.dk');
+
+
+-- Created by Morten C.
+-- Static data for Customer table 
+INSERT INTO Customer(CVR, Name, Email, Company)VALUES('12345678', 'James', 'James@maill.dk', 'FairyTail');
+INSERT INTO Customer(CVR, Name, Email, Company)VALUES('87654321', 'Hayden', 'Hayden@maill.dk', 'DragonBall');
+INSERT INTO Customer(CVR, Name, Email, Company)VALUES('55648205', 'Richard', 'Richard@maill.dk', 'OnePiece');
+INSERT INTO Customer(CVR, Name, Email, Company)VALUES('89762315', 'Jacob', 'Jacob@maill.dk', 'Naruto');
+INSERT INTO Customer(CVR, Name, Email, Company)VALUES('45684231', 'LilWayne', 'LilWayne@maill.dk', 'Bleach');
+
+
+-- Created by Morten C.
+-- Static data for Equipment table 
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(1, 'Coffee Maker', 1);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(2, 'Whiteboard', 1);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(3, 'Coffee Maker', 2);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(4, 'Whiteboard', 2);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(5, 'Wall clock', 2);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(6, 'Whiteboard', 3);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(7, 'Wall clock', 3);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(8, 'Water', 3);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(9, 'TV', 3);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(10, 'Coffee Maker', 4);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(11, 'Whiteboard', 4);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(12, 'Wall clock', 4);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(13, 'Water', 4);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(14, 'TV', 4);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(15, 'Coffee Maker', 5);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(16, 'Whiteboard', 5);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(17, 'Wall clock', 5);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(18, 'Water', 5);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(19, 'TV', 5);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(20, 'Projector', 5);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(21, 'Whiteboard', 6);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(22, 'Wall clock', 6);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(23, 'Water', 6);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(24, 'TV', 6);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(25, 'Projector', 6);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(26, 'Coffee Maker', 7);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(27, 'Whiteboard', 7);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(28, 'Wall clock', 7);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(29, 'Projector', 7);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(30, 'Coffee Maker', 8);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(31, 'Whiteboard', 8);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(32, 'Wall clock', 8);
+INSERT INTO Equipment(Id, Name, ConferenceRoomId)VALUES(33, 'Water', 8);
