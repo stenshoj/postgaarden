@@ -8,6 +8,8 @@ namespace Postgaarden.Model.Persons
 {
     public class Customer : Person
     {
+        //Created by Jens Kloster
+
         private string cvr;
         private string companyName;
 

@@ -10,33 +10,30 @@ namespace Postgaarden.Crud.Persons
 {
     public class SqliteCustomerCrud : CustomerCrud
     {
+        //Created by Jens Kloster
+
         public SqliteCustomerCrud(DatabaseConnection connection)
         {
             this.DBConnection = connection;
         }
 
-        //List<Customer> customerlist = new List<Customer>
-        //{
-        //    new Customer() {Cvr = "12345678", CompanyName = "Merch", Name = "Chuck", EmailAddress = "Chuck@hotmail.com"},
-        //    new Customer() {Cvr = "98126572", CompanyName = "GoatCO", Name = "Billy", EmailAddress = "Billy@hotmail.com"},
-        //    new Customer() {Cvr = "67545398", CompanyName = "FamersMarket", Name = "Martha", EmailAddress = "Martha@hotmail.com"},
-        //    new Customer() {Cvr = "53217890", CompanyName = "DrummingWorld", Name = "Chad", EmailAddress = "Chad@hotmail.com"}
-        //};
-
         public override void Create(Customer entry)
         {
-            DBConnection.ExecuteQuery("INSERT INTO Customer (CompanyName, Name, Cvr, EmailAddress) VALUES (Merch, Jens, 12345678, jens@mail.com)");
+            //Create a new customer where the primary key is NOT Autoincrementet
+            DBConnection.ExecuteQuery($"INSERT INTO Customer (CompanyName, Name, Cvr, EmailAddress) VALUES ({entry.CompanyName}, {entry.Name}, {entry.Cvr}, {entry.EmailAddress})");
         }
 
         public override void Delete(Customer entry)
         {
-
+            //Deletes a customer based on the Cvr given when the method is called
+            DBConnection.ExecuteQuery($"DELETE FROM Customer WHERE Cvr={entry.Cvr}");
         }
 
         public override IEnumerable<Customer> Read()
         {
             var rows = DBConnection.ExecuteQuery("SELECT CompanyName, Name, Cvr, EmailAddress FROM Customer");
             var customers = new List<Customer>();
+            //Goes through a foreach loop to add all the customers to a list to be read
             foreach(var row in rows)
             {
                 Customer c = new Customer { CompanyName = row.ElementAt(0).ToString(), Name = row.ElementAt(1).ToString(), Cvr = row.ElementAt(2).ToString(), EmailAddress = row.ElementAt(3).ToString() };
@@ -44,11 +41,6 @@ namespace Postgaarden.Crud.Persons
             }
 
             return customers;
-
-            //return new Customer[] { new Customer { CompanyName = rows.ElementAt(0).First().ToString() },
-            //                        new Customer { Name = rows.ElementAt(1).First().ToString() },
-            //                        new Customer { Cvr = rows.ElementAt(2).First().ToString() },
-            //                        new Customer { EmailAddress = rows.ElementAt(3).First().ToString() }};
         }
 
         public override Customer Read(Booking booking)
@@ -58,6 +50,7 @@ namespace Postgaarden.Crud.Persons
 
         public override Customer Read(string key)
         {
+            //Reads a single customer based on the Cvr given when the method is called
             var customer = DBConnection.ExecuteQuery("SELECT CompanyName, Name, Cvr, EmailAddress FROM Customer WHERE Cvr = "+key+"");
             return new Customer
             {
@@ -70,7 +63,8 @@ namespace Postgaarden.Crud.Persons
         
         public override void Update(Customer entry)
         {
-
+            //Updates a customer based on the Cvr given when the method is called
+            DBConnection.ExecuteQuery($"UPDATE Customer SET CompanyName={entry.CompanyName}, Name={entry.Name}, EmailAddress={entry.EmailAddress} WHERE Cvr={entry.Cvr}");
         }
     }
 }

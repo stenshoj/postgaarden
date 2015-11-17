@@ -61,7 +61,7 @@
     <Compile Include="BookingUnitTest.cs" />
     <Compile Include="RoomData.cs" />
     <Compile Include="ConferenceRoomUnitTest.cs" />
-    <Compile Include="CustomerCrudUnitTest.cs" />
+    <Compile Include="ConfirmationmailUnitTest.cs" />
     <Compile Include="EmployeeUnitTest.cs" />
     <Compile Include="RoomHandlerUnitTest.cs" />
     <Compile Include="Sql.cs" />
