@@ -5,9 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PostgaardenGui"
         mc:Ignorable="d"
-        Loaded="MainWindow_OnLoaded"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="1024"
+        Loaded="Window_Loaded">
+
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="216"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.ColumnSpan="2" FontStyle="Oblique" FontSize="25" HorizontalAlignment="Center" FontWeight="Bold">Hotel og KonferenceCenter Postgaarden</Label>
+        <StackPanel Grid.Row="1">
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Button Name="CreateBookingButton" Style="{StaticResource NormalButton}" Content="Ny Booking" Click="CreateBookingButton_Click"></Button>
+                <Button Name="DeleteBookingButton" Style="{StaticResource NormalButton}" Content="Slet Booking" Click="DeleteBookingButton_Click"></Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="EditBookingButton" Style="{StaticResource NormalButton}" Content="Rediger" Click="EditBookingButton_Click" IsEnabled="False"></Button>
+                <Button Name="BookingOverviewButton" Style="{StaticResource NormalButton}" Content="Vis rumoversigt" Click="BookingOverviewButton_Click"></Button>
+            </StackPanel>
+        </StackPanel>
+        <ListView Style="{StaticResource ListViewFormat}" Name="BookingList" Grid.Column="1" Grid.Row="1" SelectionChanged="BookingList_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="Id"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=StartTime}" Header="Start"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=EndTime}" Header="Slut"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Pricestr}" Header="Price"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=ConferenceRoomId}" Header="Lokale"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=CustomerCVR}" Header="Firma"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=EmployeeId}" Header="Ansvarlig"></GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>
