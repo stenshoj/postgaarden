@@ -24,11 +24,11 @@
                 <Button Name="DeleteBookingButton" Style="{StaticResource NormalButton}" Content="Slet Booking" Click="DeleteBookingButton_Click"></Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Button Name="EditBookingButton" Style="{StaticResource NormalButton}" Content="Rediger" Click="EditBookingButton_Click"></Button>
+                <Button Name="EditBookingButton" Style="{StaticResource NormalButton}" Content="Rediger" Click="EditBookingButton_Click" IsEnabled="False"></Button>
                 <Button Name="BookingOverviewButton" Style="{StaticResource NormalButton}" Content="Vis rumoversigt" Click="BookingOverviewButton_Click"></Button>
             </StackPanel>
         </StackPanel>
-        <ListView Style="{StaticResource ListViewFormat}" Name="BookingList" Grid.Column="1" Grid.Row="1">
+        <ListView Style="{StaticResource ListViewFormat}" Name="BookingList" Grid.Column="1" Grid.Row="1" SelectionChanged="BookingList_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="Id"></GridViewColumn>

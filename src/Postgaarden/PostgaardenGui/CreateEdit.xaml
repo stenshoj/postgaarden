@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:PostgaardenGui"
         mc:Ignorable="d"
         Title="Create_Edit" SizeToContent="WidthAndHeight"
@@ -19,39 +20,19 @@
     </Window.Resources>
     <StackPanel >
         <Grid>
-            <!--<Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <TextBlock  Style="{StaticResource HeadLine1}" Name="CreateEditHeadline" DataContext="{Binding createEdit, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-            <!--<StackPanel Grid.Column="0" Grid.Row="1">
-                <TextBlock Style="{StaticResource TextBlockFormat}" Name="StartTimeTextBlock" Text="Start:" TextAlignment="Center"></TextBlock>
-                <TextBlock Style="{StaticResource TextBlockFormat}" Name="EndTimeTextBlock" Text="Slut:" TextAlignment="Center"></TextBlock>
-                <TextBlock Style="{StaticResource TextBlockFormat}" Name="PriceTextBlock" Text="Pris:" TextAlignment="Center"></TextBlock>
-                <TextBlock Style="{StaticResource TextBlockFormat}" Name="ConferenceRoomIdTextBlock" Text="Mødelokale:" TextAlignment="Center"></TextBlock>
-                <TextBlock Style="{StaticResource TextBlockFormat}" Name="CustomerCVRTextBlock" Text="KundeCVR" TextAlignment="Center"></TextBlock>
-                <TextBlock Style="{StaticResource TextBlockFormat}" Name="EmployeeIdTextBlock" Text="Ansvarlig" TextAlignment="Center"></TextBlock>
-            </StackPanel>
-            <StackPanel Grid.Column="1" Grid.Row="1">
-                <TextBox Style="{StaticResource NormalTextBox}" Name="StartTimeTextBox"></TextBox>
-                <TextBox Style="{StaticResource NormalTextBox}" Name="EndTimeTextBox"></TextBox>
-                <TextBox Style="{StaticResource NormalTextBox}" Name="PriceTextBox"></TextBox>
-                <TextBox Style="{StaticResource NormalTextBox}" Name="ConferenceRoomIdTextBox"></TextBox>
-                <TextBox Style="{StaticResource NormalTextBox}" Name="CustomerCVRTextBox"></TextBox>
-                <TextBox Style="{StaticResource NormalTextBox}" Name="EmployeeIdTextBox"></TextBox>
-            </StackPanel>-->
             <StackPanel Grid.Row="1">
                 <StackPanel Orientation="Horizontal">
                 <TextBlock Style="{StaticResource TextBlockFormat}" Name="StartTimeTextBlock" Text="Start:" TextAlignment="Center"></TextBlock>
-                <TextBox Style="{StaticResource NormalTextBox}" Name="StartTimeTextBox"></TextBox>
+                <xctk:DateTimePicker Name="StartTimePicker"></xctk:DateTimePicker>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource TextBlockFormat}" Name="EndTimeTextBlock" Text="Slut:" TextAlignment="Center"></TextBlock>
-                    <TextBox Style="{StaticResource NormalTextBox}" Name="EndTimeTextBox"></TextBox>
+                    <xctk:DateTimePicker Name="EndTimeTextBox"></xctk:DateTimePicker>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource TextBlockFormat}" Name="PriceTextBlock" Text="Pris:" TextAlignment="Center"></TextBlock>

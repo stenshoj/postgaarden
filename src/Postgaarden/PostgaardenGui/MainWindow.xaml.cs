@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ using System.Windows.Shapes;
 
 namespace PostgaardenGui
 {
+    /// Made by Christoffer
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -37,22 +39,24 @@ namespace PostgaardenGui
 
         private void CreateBookingButton_Click(object sender, RoutedEventArgs e)
         {
-            CreateEdit create = new CreateEdit("Create");
+            CreateEdit create = new CreateEdit("Create", Bookings);
             create.ShowDialog();
         }
 
         private void EditBookingButton_Click(object sender, RoutedEventArgs e)
         {
-            CreateEdit edit = new CreateEdit("Edit");
-            var selecteditem = (dynamic)BookingList.SelectedItems[0];
-            edit.StartTimeTextBox.Text = selecteditem.StartTime.ToString();
-            edit.EndTimeTextBox.Text = selecteditem.EndTime.ToString();
-            edit.EmployeeIdTextBox.Text = selecteditem.EmployeeId.ToString();
-            edit.PriceTextBox.Text = selecteditem.Price.ToString();
-            edit.ConferenceRoomIdTextBox.Text = selecteditem.ConferenceRoomId.ToString();
-            edit.CustomerCVRTextBox.Text = selecteditem.CustomerCVR.ToString();
+            CreateEdit edit = new CreateEdit("Edit", Bookings, (Booking)BookingList.SelectedItems[0]);
+            Booking selecteditem = (Booking)BookingList.SelectedItems[0];
+            edit.StartTimePicker.Text = ((Booking)selecteditem).StartTime.ToString();
+            edit.EndTimeTextBox.Text = ((Booking)selecteditem).EndTime.ToString();
+            edit.EmployeeIdTextBox.Text = ((Booking)selecteditem).EmployeeId.ToString();
+            edit.PriceTextBox.Text = ((Booking)selecteditem).Price.ToString();
+            edit.ConferenceRoomIdTextBox.Text = ((Booking)selecteditem).ConferenceRoomId.ToString();
+            edit.CustomerCVRTextBox.Text = ((Booking)selecteditem).CustomerCVR.ToString();
 
             edit.ShowDialog();
+            ICollectionView view = CollectionViewSource.GetDefaultView(Bookings);
+            view.Refresh();
         }
 
         private void BookingOverviewButton_Click(object sender, RoutedEventArgs e)
@@ -62,7 +66,17 @@ namespace PostgaardenGui
         }
 
         private void DeleteBookingButton_Click(object sender, RoutedEventArgs e)
-        {            
+        {
+            bookingCrud.Delete((Booking)BookingList.SelectedItems[0]);
+            Bookings.Remove((Booking)BookingList.SelectedItems[0]);            
+        }
+
+        private void BookingList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (BookingList.SelectedItem != null)
+                EditBookingButton.IsEnabled = true;
+            else
+                EditBookingButton.IsEnabled = false;
         }
     }
 }

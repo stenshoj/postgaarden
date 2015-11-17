@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PostgaardenGui
 {
+    /// Made by Christoffer
     class BookingCrud
     {
         public IEnumerable<Booking> Read()
