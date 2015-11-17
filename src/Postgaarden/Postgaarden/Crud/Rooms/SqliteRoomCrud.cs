@@ -60,7 +60,13 @@ namespace Postgaarden.Crud.Rooms
 
         public override Room Read(Booking booking)
         {
-            throw new NotImplementedException();
+            var room = DBConnection.ExecuteQuery(
+                $"SELECT Id, Size FROM ConferenceRoom "+
+                $"JOIN Booking ON ConferenceRoom.Id = Booking.ConferenceRoomId "+
+                $"WHERE Booking.Id = {booking.Id};"
+                );
+
+            return ParseToRoom(room).First();
         }
 
         /// <summary>

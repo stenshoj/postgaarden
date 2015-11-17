@@ -8,6 +8,7 @@ using Moq;
 using Postgaarden.Connection;
 using System.Collections.Generic;
 using Postgaarden.Model.Equipments;
+using Postgaarden;
 
 namespace PostgaardenUnitTest
 {
@@ -44,6 +45,23 @@ namespace PostgaardenUnitTest
 
             Assert.AreEqual("INSERT INTO ConferenceRoom (Id, Size) VALUES (1, 10);", sql);
         }
+        
+        /// <summary>
+        /// Tests the read all to SQL.
+        /// </summary>
+        [TestMethod]
+        public void TestReadAllToSql()
+        {
+            string sql = "";
+
+            roomMock.Setup(x => x.ExecuteQuery(It.IsAny<string>()))
+                .Callback((string s) => sql = s)
+                .Returns(new[] { new object[] { 5, 6 } });
+
+            crud.Read();
+
+            Assert.AreEqual("SELECT Id, Size FROM ConferenceRoom;", sql);
+        }
 
         /// <summary>
         /// Tests the read all.
@@ -65,6 +83,20 @@ namespace PostgaardenUnitTest
             Assert.AreEqual(data.Rooms.First().Name, rooms.First().Name);
             Assert.AreEqual(data.Rooms.First().Size, rooms.First().Size);
             CollectionAssert.AreEqual(equipment, rooms.First().Equipments);
+        }
+
+        [TestMethod]
+        public void TestReadOneToSql()
+        {
+            string sql = "";
+
+            roomMock.Setup(x => x.ExecuteQuery(It.IsAny<string>()))
+                .Callback((string s) => sql = s)
+                .Returns(new[] { new object[] { 5, 6 } });
+
+            crud.Read(1);
+
+            Assert.AreEqual("SELECT Id, Size FROM ConferenceRoom WHERE Id = 1;", sql);
         }
 
         /// <summary>
@@ -119,6 +151,50 @@ namespace PostgaardenUnitTest
             crud.Delete(room);
 
             Assert.AreEqual("DELETE FROM ConferenceRoom WHERE Id = 1;", sql);
+        }
+
+
+        /// <summary>
+        /// Tests the read booking to SQL.
+        /// </summary>
+        [TestMethod]
+        public void TestReadBookingToSql()
+        {
+            string stringToTest =
+                "SELECT Id, Size FROM ConferenceRoom " +
+                "JOIN Booking ON ConferenceRoom.Id = Booking.ConferenceRoomId " +
+                "WHERE Booking.Id = 1;";
+            string sql = "";
+            Booking b = new Booking();
+            b.Id = 1;
+            b.Price = 800;
+
+            roomMock.Setup(x => x.ExecuteQuery(It.IsAny<string>()))
+                .Callback((string s) => sql = s)
+                .Returns(new[] { new object[] { 5, 6 } });
+
+            b.Room = crud.Read(b);
+
+            Assert.AreEqual(stringToTest, sql);
+        }
+
+
+        /// <summary>
+        /// Tests the read booking parse.
+        /// </summary>
+        [TestMethod]
+        public void TestReadBookingParse()
+        {
+            Booking b = new Booking();
+            b.Id = 1;
+            b.Price = 800;
+
+            roomMock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Returns(new[] { new object[] { 5, 6 } });
+
+            b.Room = crud.Read(b);
+
+            Assert.AreEqual(5, b.Room.Id);
+            Assert.AreEqual(6, b.Room.Size);
         }
     }
 }
