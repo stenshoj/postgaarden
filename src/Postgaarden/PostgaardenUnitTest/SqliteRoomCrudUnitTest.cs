@@ -85,6 +85,10 @@ namespace PostgaardenUnitTest
             CollectionAssert.AreEqual(equipment, rooms.First().Equipments);
         }
 
+
+        /// <summary>
+        /// Tests the read one to SQL.
+        /// </summary>
         [TestMethod]
         public void TestReadOneToSql()
         {

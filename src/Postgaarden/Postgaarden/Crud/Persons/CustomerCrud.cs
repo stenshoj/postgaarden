@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace Postgaarden.Crud.Persons
 {
+    //Created by Jens Kloster
     public abstract class CustomerCrud: Crud <Customer, string>
     {
-<<<<<<< HEAD
         public abstract Customer Read(Booking booking);
-=======
-        //Created by Jens Kloster
->>>>>>> persons
     }
 }
