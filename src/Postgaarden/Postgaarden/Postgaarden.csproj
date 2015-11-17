@@ -85,6 +85,7 @@
     <Compile Include="Crud\Equipments\SqliteEquipmentCrud.cs" />
     <Compile Include="Crud\Rooms\RoomCrud.cs" />
     <Compile Include="Crud\Rooms\SqliteRoomCrud.cs" />
+    <Compile Include="Model\Bookings\BookingXmlExport.cs" />
     <Compile Include="Model\Persons\Customer.cs" />
     <Compile Include="Crud\Persons\CustomerCrud.cs" />
     <Compile Include="Model\Persons\Employee.cs" />
