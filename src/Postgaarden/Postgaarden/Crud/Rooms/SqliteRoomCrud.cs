@@ -16,26 +16,16 @@ namespace Postgaarden.Crud.Rooms
     */
     public class SqliteRoomCrud : RoomCrud
     {
-        /// <summary>
-        /// The rooms
-        /// </summary>
-        private List<Room> rooms = new List<Room> {
-                new ConferenceRoom { Id = 1, Size = 8 },
-                new ConferenceRoom { Id = 2, Size = 4 },
-                new ConferenceRoom { Id = 3, Size = 8 },
-                new ConferenceRoom { Id = 4, Size = 12 },
-                new ConferenceRoom { Id = 5, Size = 6 },
-                new ConferenceRoom { Id = 6, Size = 6 },
-            };
-
+        private EquipmentCrud equipmentCrud;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SqliteRoomCrud"/> class.
         /// </summary>
         /// <param name="connection">The connection.</param>
-        public SqliteRoomCrud(DatabaseConnection connection)
+        public SqliteRoomCrud(DatabaseConnection connection, EquipmentCrud equipmentCrud)
         {
             this.DBConnection = connection;
+            this.equipmentCrud = equipmentCrud;
         }
 
         /// <summary>
@@ -44,7 +34,7 @@ namespace Postgaarden.Crud.Rooms
         /// <param name="entry">The entry.</param>
         public override void Create(Room entry)
         {
-            rooms.Add(entry);
+            DBConnection.ExecuteQuery($"INSERT INTO ConferenceRoom (Id, Size) VALUES ({entry.Id}, {entry.Size});");
         }
 
         /// <summary>
@@ -53,7 +43,7 @@ namespace Postgaarden.Crud.Rooms
         /// <param name="entry">The entry.</param>
         public override void Delete(Room entry)
         {
-            rooms.Remove(entry);
+            DBConnection.ExecuteQuery($"DELETE FROM ConferenceRoom WHERE Id = {entry.Id};");
         }
 
         /// <summary>
@@ -64,28 +54,13 @@ namespace Postgaarden.Crud.Rooms
         /// </returns>
         public override IEnumerable<Room> Read()
         {
-            var equipmentCrud = new SqliteEquipmentCrud();
+            var rooms = DBConnection.ExecuteQuery("SELECT Id, Size FROM ConferenceRoom;");
+            return ParseToRoom(rooms);
+        }
 
-            foreach (var room in rooms)
-                foreach (var e in equipmentCrud.Read(room))
-                    room.Equipments.Add(e);
-
-            return rooms;
-
-
-        //    var items = DBConnection.ExecuteQuery("ewq");
-
-        //    foreach (var row in items)
-        //    {
-        //        Room room = new ConferenceRoom();
-        //        room.Id = (int)row.ElementAt(0);
-        //        room.Size = (int)row.ElementAt(1);
-        //        foreach(var e in equipmentCrud.Read(room))
-        //        {
-        //            room.Equipments.Add(e);
-        //        }
-        //        yield return room;
-        //    }
+        public override Room Read(Booking booking)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -97,8 +72,8 @@ namespace Postgaarden.Crud.Rooms
         /// </returns>
         public override Room Read(int key)
         {
-            var cols = DBConnection.ExecuteQuery("ewq");
-            return new ConferenceRoom { Id = (int)cols.First().First(), Size = (int)cols.First().ElementAt(1) };
+            var room = DBConnection.ExecuteQuery($"SELECT Id, Size FROM ConferenceRoom WHERE Id = {key};");
+            return ParseToRoom(room).First();
         }
 
         /// <summary>
@@ -107,7 +82,22 @@ namespace Postgaarden.Crud.Rooms
         /// <param name="entry">The entry.</param>
         public override void Update(Room entry)
         {
-            DBConnection.ExecuteQuery(string.Format($"UPDATE Room SET Size = {entry.Size} WHERE Id = {entry.Id}"));
+            DBConnection.ExecuteQuery($"UPDATE ConferenceRoom SET Size = {entry.Size} WHERE Id = {entry.Id};");
+        }
+
+        private IEnumerable<Room> ParseToRoom(IEnumerable<IEnumerable<object>> objectToParse)
+        {
+            foreach (var row in objectToParse)
+            {
+                Room room = new ConferenceRoom();
+                room.Id = Convert.ToInt32(row.ElementAt(0));
+                room.Size = Convert.ToInt32(row.ElementAt(1));
+                foreach (var e in equipmentCrud.Read(room))
+                {
+                    room.Equipments.Add(e);
+                }
+                yield return room;
+            }
         }
     }
 }

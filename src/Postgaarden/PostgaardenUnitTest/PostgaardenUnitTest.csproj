@@ -56,12 +56,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="BookingXmlExportUnitTest.cs" />
+=======
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqliteBookingCrudUnitTest.cs" />
+    <Compile Include="BookingUnitTest.cs" />
+    <Compile Include="RoomData.cs" />
+>>>>>>> develop
     <Compile Include="ConferenceRoomUnitTest.cs" />
     <Compile Include="CustomerCrudUnitTest.cs" />
     <Compile Include="EmployeeUnitTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoomData.cs" />
     <Compile Include="RoomHandlerUnitTest.cs" />
     <Compile Include="Sql.cs" />
     <Compile Include="SqliteRoomCrudUnitTest.cs" />

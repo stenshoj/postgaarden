@@ -1,12 +1,10 @@
-﻿using Postgaarden.Connection;
-using Postgaarden.Model.Persons;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Postgaarden.Crud.Persons
+namespace Postgaarden
 {
     public class SqliteEmployeeCrud : EmployeeCrud
     {
@@ -26,7 +24,7 @@ namespace Postgaarden.Crud.Persons
 
         public override void Create(Employee entry)
         {
-            DBConnection.ExecuteQuery("INSERT INTO Employee (Id, Name, EmailAddress) VALUES (1, Jens, EmailAddress)");
+
         }
 
         public override void Delete(Employee entry)
@@ -47,18 +45,10 @@ namespace Postgaarden.Crud.Persons
             return employees;
         }
 
-        public override Employee Read(Booking booking)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Employee Read(int key)
         {
-            var employee = DBConnection.ExecuteQuery("SELECT Id, Name, EmailAddress FROM Employee WHERE Id="+key+"");
-            return new Employee{ Id = (int)employee.First().ElementAt(0),
-                                 Name = employee.First().ElementAt(1).ToString(),
-                                 EmailAddress = employee.First().ElementAt(2).ToString()
-                                 };
+            var employee = DBConnection.ExecuteQuery("SELECT Id, Name, EmailAddress FROM Employee WHERE Id=key");
+            return new Employee();
         }
 
         public override void Update(Employee entry)

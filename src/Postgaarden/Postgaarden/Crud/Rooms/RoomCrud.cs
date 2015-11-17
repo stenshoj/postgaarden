@@ -13,6 +13,6 @@ namespace Postgaarden.Crud.Rooms
     */
     public abstract class RoomCrud : Crud<Room, int>
     {
-
+        public abstract Room Read(Booking booking);
     }
 }
