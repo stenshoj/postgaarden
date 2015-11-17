@@ -59,6 +59,7 @@ namespace PostgaardenUnitTest
             var customer = crud.Read("");
 
             Assert.AreEqual("merch", customer.CompanyName);
+            //Assert.AreEqual
             Assert.AreEqual("jens", customer.Name);
             Assert.AreEqual("97865467", customer.Cvr);
             Assert.AreEqual("thismail@mail.com", customer.EmailAddress);

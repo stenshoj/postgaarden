@@ -1,10 +1,50 @@
-CREATE DATABASE postgaarden;
+-- Created by Christoffer
+-- CREATE postgaarden;
+-- USE postgaarden;
 
-CREATE TABLE Booking (
-Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-StartTime DATETIME NOT NULL,
-EndTime DATETIME NOT NULL,
-Price DOUBLE NOT NULL,
-ConferenceRoomId INTEGER NOT NULL,
-CustomerCVR VARCHAR(8) NOT NULL,
-EmployeeId INTEGER NOT NULL);
+-- Created by Morten C.
+CREATE TABLE `Employee` (
+	`Id`	INTEGER NOT NULL,
+	`Name`	CHAR(25) NOT NULL,
+	`Email`	CHAR(25) NOT NULL,
+	PRIMARY KEY(Id)
+);
+
+-- Created by Morten C.
+CREATE TABLE `Customer` (
+	`CVR`	CHAR(8) NOT NULL,
+	`Name`	CHAR(25) NOT NULL,
+	`Email`	CHAR(25) NOT NULL,
+	`Company`	CHAR(25) NOT NULL,
+	PRIMARY KEY(CVR)
+);
+
+-- Created by Morten C.
+CREATE TABLE `ConferenceRoom` (
+	`Id`	INTEGER NOT NULL,
+	`Capacity`	INTEGER NOT NULL,
+	PRIMARY KEY(Id)
+);
+
+-- Created by Morten C.
+CREATE TABLE `Equipment` (
+	`Id`	INTEGER NOT NULL,
+	`Name`	CHAR(25) NOT NULL,
+	`ConferenceRoomId`	INTEGER NOT NULL,
+	PRIMARY KEY(Id),
+	FOREIGN KEY(`ConferenceRoomId`) REFERENCES ConferenceRoom ( Id )
+);
+
+-- Created by Christoffer
+CREATE TABLE `Booking` (
+	`Id`	INTEGER NOT NULL AUTOINCREMENT,
+	`StartTime`	DATETIME NOT NULL,
+	`EndTime`	DATETIME NOT NULL,
+	`Price`	REAL NOT NULL,
+	`ConferenceRoomId`	INTEGER NOT NULL,
+	`CustomerCVR`	CHAR(8) NOT NULL,
+	`EmployeeId`	INTEGER NOT NULL,
+	PRIMARY KEY(Id)
+	FOREIGN KEY(`ConferenceRoomId`) REFERENCES ConferenceRoom ( Id ),
+	FOREIGN KEY(`EmployeeId`) REFERENCES Employee ( Id )
+);
