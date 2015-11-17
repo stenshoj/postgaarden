@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Postgaarden.Model.Users;
+using Postgaarden.Connection;
+
+namespace Postgaarden.Crud.Users
+{
+    public class SqliteUserCrud : UserCrud
+    {
+        List<User> users;
+
+        public SqliteUserCrud(DatabaseConnection connection)
+        {
+            DBConnection = connection;
+
+            users = new List<User>();
+            users.Add(new User("53154", "LoneWolf88"));
+            users.Add(new User("64856", "Password1"));
+            users.Add(new User("153153", "P@ssw0rd"));
+            users.Add(new User("53154", "12345678"));
+            users.Add(new User("53154", "drowssap"));
+        }
+
+        public override void Create(User entry)
+        {
+
+        }
+
+        public override void Delete(User entry)
+        {
+
+        }
+
+        public override IEnumerable<User> Read()
+        {
+            return users;
+        }
+
+        public override User Read(string key)
+        {
+            return users.FirstOrDefault(user => user.Username.Equals(key));
+        }
+
+        public override void Update(User entry)
+        {
+
+        }
+    }
+}

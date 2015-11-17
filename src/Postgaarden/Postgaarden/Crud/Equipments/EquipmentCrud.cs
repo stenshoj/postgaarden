@@ -1,4 +1,5 @@
 ﻿using Postgaarden.Model.Equipments;
+using Postgaarden.Model.Rooms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace Postgaarden.Crud.Equipments
     */
     public abstract class EquipmentCrud : Crud<Equipment, int>
     {
+        public abstract IEnumerable<Equipment> Read(Room room);
     }
 }
