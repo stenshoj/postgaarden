@@ -8,6 +8,8 @@ namespace Postgaarden.Model.Persons
 {
     public abstract class Person
     {
+        //Created by Jens Kloster
+
         private string name;
         private string emailaddress;
 

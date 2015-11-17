@@ -9,5 +9,6 @@ namespace Postgaarden.Crud.Persons
 {
     public abstract class EmployeeCrud : Crud<Employee, int>
     {
+        //Created by Jens Kloster
     }
 }
