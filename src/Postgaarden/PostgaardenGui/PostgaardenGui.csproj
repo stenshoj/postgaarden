@@ -145,6 +145,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PostgaardenMail\PostgaardenMail.csproj">
+      <Project>{668089a6-6a60-4f79-8d40-db348788a662}</Project>
+      <Name>PostgaardenMail</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Postgaarden\Postgaarden.csproj">
       <Project>{4622de7f-c38e-46eb-a392-97dc38fb2a4b}</Project>
       <Name>Postgaarden</Name>
