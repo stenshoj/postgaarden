@@ -43,11 +43,6 @@ namespace Postgaarden.Crud.Persons
             return employees;
         }
 
-        public override Employee Read(Booking booking)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Employee Read(int key)
         {
             //Returns a single employee based on the id given when the method is called 
@@ -63,5 +58,24 @@ namespace Postgaarden.Crud.Persons
             //Updates an employee based on the id given when the method is called
             DBConnection.ExecuteQuery($"UPDATE Employee SET Name={entry.Name}, EmailAddress={entry.EmailAddress} WHERE Id={entry.Id}");
         }
+
+        #region Developed By Chris Wohlert
+
+        public override Employee Read(Booking booking)
+        {
+            var cust = DBConnection.ExecuteQuery(
+                "SELECT Id, Name, EmailAddress FROM Customer AS e " +
+                "JOIN Booking AS b ON e.Id = b.EmployeeId " +
+                $"WHERE b.Id = {booking.Id};").First();
+
+            return new Employee
+            {
+                Id = Convert.ToInt32(cust.ElementAt(0)),
+                Name = cust.ElementAt(1).ToString(),
+                EmailAddress = cust.ElementAt(2).ToString()
+            };
+        }
+
+        #endregion
     }
 }

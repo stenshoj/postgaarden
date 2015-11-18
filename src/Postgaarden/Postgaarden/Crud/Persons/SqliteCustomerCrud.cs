@@ -43,11 +43,6 @@ namespace Postgaarden.Crud.Persons
             return customers;
         }
 
-        public override Customer Read(Booking booking)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Customer Read(string key)
         {
             //Reads a single customer based on the Cvr given when the method is called
@@ -66,5 +61,25 @@ namespace Postgaarden.Crud.Persons
             //Updates a customer based on the Cvr given when the method is called
             DBConnection.ExecuteQuery($"UPDATE Customer SET CompanyName={entry.CompanyName}, Name={entry.Name}, EmailAddress={entry.EmailAddress} WHERE Cvr={entry.Cvr}");
         }
+
+        #region Developed By Chris Wohlert
+        
+        public override Customer Read(Booking booking)
+        {
+            var cust = DBConnection.ExecuteQuery(
+                "SELECT Cvr, Name, CompanyName, EmailAddress FROM Customer AS c " +
+                "JOIN Booking AS b ON c.Cvr = b.CustumerCVR " +
+                $"WHERE b.Id = {booking.Id};").First();
+
+            return new Customer
+            {
+                Cvr = cust.ElementAt(0).ToString(),
+                Name = cust.ElementAt(1).ToString(),
+                CompanyName = cust.ElementAt(2).ToString(),
+                EmailAddress = cust.ElementAt(3).ToString()
+            };
+        }
+
+        #endregion
     }
 }

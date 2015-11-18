@@ -53,7 +53,6 @@ namespace Postgaarden
         public override void Delete(Booking entry)
         {
             var Id = DBConnection.ExecuteQuery($"DELETE FROM Booking WHERE Id={entry.Id};");
-            entry.Id = Convert.ToInt32(Id.First().First());
         }
 
         public override IEnumerable<Booking> Read()
@@ -106,7 +105,6 @@ namespace Postgaarden
         public override void Update(Booking entry)
         {
             var Id = DBConnection.ExecuteQuery($"UPDATE Booking SET StartTime={entry.StartTime}, EndTime={entry.EndTime}, ConferenceRoomId={entry.Room.Id}, Price={entry.Price} WHERE Id={entry.Id};");
-            entry.Id = Convert.ToInt32(Id.First().First());
         }
     }
 }

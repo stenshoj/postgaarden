@@ -120,7 +120,8 @@ namespace PostgaardenUnitTest
             var mock = new Mock<DatabaseConnection>();
             var crud = new SqliteCustomerCrud(mock.Object);
 
-            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Callback((string s) => sql = s);
+            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Callback((string s) => sql = s)
+                .Returns(new[] { new object[] { "12345678", "Lone Wolf", "Wolfgang", "Lone@Wolf.dk" } });
 
             crud.Read(new Booking { Id = 1 });
 
@@ -139,8 +140,8 @@ namespace PostgaardenUnitTest
             var customer = crud.Read(new Booking());
 
             Assert.AreEqual("12345678", customer.Cvr);
-            Assert.AreEqual("Long Wolf", customer.Name);
-            Assert.AreEqual("Wolf inc", customer.CompanyName);
+            Assert.AreEqual("Lone Wolf", customer.Name);
+            Assert.AreEqual("Wolfgang", customer.CompanyName);
             Assert.AreEqual("Lone@Wolf.dk", customer.EmailAddress);
         }
 
