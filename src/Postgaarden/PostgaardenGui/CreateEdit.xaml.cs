@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Postgaarden;
+using Postgaarden.Connection.Sqlite;
+using Postgaarden.Crud.Equipments;
+using Postgaarden.Crud.Persons;
+using Postgaarden.Crud.Rooms;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -22,13 +27,24 @@ namespace PostgaardenGui
     /// </summary>
     public partial class CreateEdit : Window
     {
-        private BookingCrud bookingCrud = new BookingCrud();
+        private EmployeeCrud empCrud;
+        private CustomerCrud cusCrud;
+        private EquipmentCrud equiCrud;
+        private RoomCrud roomCrud;
+        private BookingCrud bookingCrud;
         public ObservableCollection<Booking> Bookings { get; set; }
         public Booking Booking { get; set; }
         public string createEdit { get; set; }
         public CreateEdit(string createEdit, ObservableCollection<Booking> bookings, Booking booking = null)
         {
             InitializeComponent();
+            
+            empCrud = new SqliteEmployeeCrud(SqliteDatabaseConnection.GetInstance());
+            cusCrud = new SqliteCustomerCrud(SqliteDatabaseConnection.GetInstance());
+            equiCrud = new SqliteEquipmentCrud(SqliteDatabaseConnection.GetInstance());
+            roomCrud = new SqliteRoomCrud(SqliteDatabaseConnection.GetInstance(), equiCrud);
+            bookingCrud = new SqliteBookingCrud(SqliteDatabaseConnection.GetInstance(), roomCrud, cusCrud, empCrud);
+
             this.createEdit = createEdit;
             Bookings = bookings;
             if (booking != null)
@@ -60,9 +76,9 @@ namespace PostgaardenGui
                     Booking booking = new Booking();
                     booking.StartTime = Convert.ToDateTime(StartTimePicker.Text);
                     booking.EndTime = Convert.ToDateTime(EndTimeTextBox.Text);
-                    booking.ConferenceRoomId = Convert.ToInt32(ConferenceRoomIdTextBox.Text);
-                    booking.CustomerCVR = CustomerCVRTextBox.Text;
-                    booking.EmployeeId = Convert.ToInt32(EmployeeIdTextBox.Text);
+                    booking.Room = roomCrud.Read(Convert.ToInt32(ConferenceRoomIdTextBox.Text));
+                    booking.Customer = cusCrud.Read(CustomerCVRTextBox.Text);
+                    booking.Employee = empCrud.Read(Convert.ToInt32(EmployeeIdTextBox.Text));
                     booking.Price = Convert.ToDouble(PriceTextBox.Text);
                     bookingCrud.Create(new Booking());
                     Bookings.Add(booking);
@@ -71,9 +87,9 @@ namespace PostgaardenGui
                     booking = Booking;
                     booking.StartTime = Convert.ToDateTime(StartTimePicker.Text);
                     booking.EndTime = Convert.ToDateTime(EndTimeTextBox.Text);
-                    booking.ConferenceRoomId = Convert.ToInt32(ConferenceRoomIdTextBox.Text);
-                    booking.CustomerCVR = CustomerCVRTextBox.Text;
-                    booking.EmployeeId = Convert.ToInt32(EmployeeIdTextBox.Text);
+                    booking.Room = roomCrud.Read(Convert.ToInt32(ConferenceRoomIdTextBox.Text));
+                    booking.Customer = cusCrud.Read(CustomerCVRTextBox.Text);
+                    booking.Employee = empCrud.Read(Convert.ToInt32(EmployeeIdTextBox.Text));
                     booking.Price = Convert.ToDouble(PriceTextBox.Text);
                     bookingCrud.Update(booking);
 

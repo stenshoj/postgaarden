@@ -36,6 +36,16 @@
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
         </Style>
 
+        <Style TargetType="TextBox" x:Key="StretchTextBox">
+            <Setter Property="Margin" Value="4"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+        </Style>
+
+        <Style TargetType="PasswordBox" x:Key="StretchPasswordBox">
+            <Setter Property="Margin" Value="4"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+        </Style>
+
         <Style TargetType="CheckBox" x:Key="VerticalCenteredCheckBox">
             <Setter Property="Margin" Value="4"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
