@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Postgaarden.Connection;
 using Postgaarden.Model.Equipments;
 using Postgaarden.Model.Rooms;
 using Postgaarden.Connection;
@@ -10,18 +11,17 @@ using Postgaarden.Connection;
 namespace Postgaarden.Crud.Equipments
 {
     /*
-        Developed by Chris Wohlert
+        Developed by Martin Hansen
     */
     public class SqliteEquipmentCrud : EquipmentCrud
     {
-        private Dictionary<Equipment, int> equipments;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SqliteEquipmentCrud"/> class.
         /// </summary>
-        public SqliteEquipmentCrud(DatabaseConnection connection)
+        /// <param name="databaseConnection">The database connection.</param>
+        public SqliteEquipmentCrud(DatabaseConnection databaseConnection)
         {
-            this.DBConnection = connection;
+            DBConnection = databaseConnection;
         }
 
         /// <summary>
@@ -30,7 +30,9 @@ namespace Postgaarden.Crud.Equipments
         /// <param name="entry">The entry.</param>
         public override void Create(Equipment entry)
         {
+            var createReturn = DBConnection.ExecuteQuery($"INSERT INTO Equipment (Name) VALUES ('{entry.Name}'); SELECT MAX(Id) FROM Equipment;");
 
+            entry.Id = (int)createReturn.First().First();
         }
 
         /// <summary>
@@ -39,7 +41,7 @@ namespace Postgaarden.Crud.Equipments
         /// <param name="entry">The entry.</param>
         public override void Delete(Equipment entry)
         {
-
+            DBConnection.ExecuteQuery($"DELETE FROM Equipment WHERE Id = {entry.Id};");
         }
 
         /// <summary>
@@ -48,10 +50,25 @@ namespace Postgaarden.Crud.Equipments
         /// <returns>
         /// Returns every T from the database connection
         /// </returns>
-        /// <exception cref="System.NotImplementedException"></exception>
         public override IEnumerable<Equipment> Read()
         {
-            throw new NotImplementedException();
+            var equipmentObjects = DBConnection.ExecuteQuery("SELECT Id,Name FROM Equipment;");
+
+            return equipmentObjects.Select(o => new Equipment((string)o.ElementAt(1)) {Id = (int)o.ElementAt(0)});
+        }
+
+        /// <summary>
+        /// Reads the specified room.
+        /// </summary>
+        /// <param name="room">The room.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public override IEnumerable<Equipment> Read(Room room)
+        {
+            var equipments = DBConnection.ExecuteQuery(
+                $"SELECT Equipment.Id, Equipment.Name FROM Equipment JOIN Room ON Equipment.Id = Room.EquipmentId WHERE Room.Id = {room.Id};");
+
+            return equipments.Select(o => new Equipment((string)o.ElementAt(1)) { Id = (int)o.ElementAt(0) });
         }
 
         /// <summary>
@@ -61,21 +78,11 @@ namespace Postgaarden.Crud.Equipments
         /// <returns>
         /// Returns every T from the database connection
         /// </returns>
-        /// <exception cref="System.NotImplementedException"></exception>
         public override Equipment Read(int key)
         {
-            throw new NotImplementedException();
-        }
+            var readReturn = DBConnection.ExecuteQuery($"SELECT Id,Name FROM Equipment WHERE Id = {key};").First();
 
-        /// <summary>
-        /// Reads the specified room.
-        /// </summary>
-        /// <param name="room">The room.</param>
-        /// <returns></returns>
-        public override IEnumerable<Equipment> Read(Room room)
-        {
-            foreach (var e in equipments)
-                if (e.Value == room.Id) yield return e.Key;
+            return new Equipment((string)readReturn.ElementAt(1)) { Id = (int)readReturn.ElementAt(0) };
         }
 
         /// <summary>
@@ -84,7 +91,7 @@ namespace Postgaarden.Crud.Equipments
         /// <param name="entry">The entry.</param>
         public override void Update(Equipment entry)
         {
-
+            DBConnection.ExecuteQuery($"UPDATE Equipment SET Name = '{entry.Name}';");
         }
     }
 }

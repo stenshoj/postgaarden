@@ -4,6 +4,7 @@ using System.Linq;
 using Postgaarden.Model.Persons;
 using Postgaarden.Connection;
 using Postgaarden.Crud.Persons;
+using Postgaarden;
 
 namespace PostgaardenUnitTest
 {
@@ -102,5 +103,45 @@ namespace PostgaardenUnitTest
             Assert.AreEqual("DELETE FROM Employee WHERE Id="+employee.Id+"", sql);
             
         }
+
+        #region Developed By Chris Wohlert
+
+        [TestMethod]
+        public void TestReadBookingToSql()
+        {
+            string stringToTest =
+                "SELECT Id, Name, EmailAddress FROM Customer AS e " +
+                "JOIN Booking AS b ON e.Id = b.EmployeeId " +
+                "WHERE b.Id = 1;";
+            string sql = "";
+
+            var mock = new Mock<DatabaseConnection>();
+            var crud = new SqliteEmployeeCrud(mock.Object);
+
+            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Callback((string s) => sql = s)
+                .Returns(new[] { new object[] { "1", "Lone Wolf", "Lone@Wolf.dk" } });
+
+            crud.Read(new Booking { Id = 1 });
+
+            Assert.AreEqual(stringToTest, sql);
+        }
+
+        [TestMethod]
+        public void TestReadBookingParse()
+        {
+            var mock = new Mock<DatabaseConnection>();
+            var crud = new SqliteEmployeeCrud(mock.Object);
+
+            mock.Setup(x => x.ExecuteQuery(It.IsAny<string>()))
+                .Returns(new[] { new object[] { "12345678", "Lone Wolf", "Lone@Wolf.dk" } });
+
+            var employee = crud.Read(new Booking());
+
+            Assert.AreEqual(12345678, employee.Id);
+            Assert.AreEqual("Lone Wolf", employee.Name);
+            Assert.AreEqual("Lone@Wolf.dk", employee.EmailAddress);
+        }
+
+        #endregion
     }
 }
