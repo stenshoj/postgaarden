@@ -66,9 +66,9 @@ namespace Postgaarden.Crud.Equipments
         public override IEnumerable<Equipment> Read(Room room)
         {
             var equipments = DBConnection.ExecuteQuery(
-                $"SELECT Equipment.Id, Equipment.Name FROM Equipment JOIN Room ON Equipment.Id = Room.EquipmentId WHERE Room.Id = {room.Id};");
+                $"SELECT Equipment.Id AS EquipmentId, Equipment.Name AS EquipmentName FROM Equipment JOIN ConferenceRoom ON Equipment.ConferenceRoomId = ConferenceRoom.Id WHERE ConferenceRoom.Id = {room.Id};");
 
-            return equipments.Select(o => new Equipment((string)o.ElementAt(1)) { Id = (int)o.ElementAt(0) });
+            return equipments.Select(o => new Equipment((string)o.ElementAt(1)) { Id = Convert.ToInt32(o.ElementAt(0)) });
         }
 
         /// <summary>
@@ -83,6 +83,11 @@ namespace Postgaarden.Crud.Equipments
             var readReturn = DBConnection.ExecuteQuery($"SELECT Id,Name FROM Equipment WHERE Id = {key};").First();
 
             return new Equipment((string)readReturn.ElementAt(1)) { Id = (int)readReturn.ElementAt(0) };
+        }
+
+        public override void Update(Equipment equipment ,Room room)
+        {
+            DBConnection.ExecuteQuery($"UPDATE Equipment SET ConferenceRoomId = {room.Id} WHERE Id = {equipment.Id};");
         }
 
         /// <summary>

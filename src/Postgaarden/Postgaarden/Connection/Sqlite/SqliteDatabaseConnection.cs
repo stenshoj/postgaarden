@@ -14,13 +14,14 @@ namespace Postgaarden.Connection.Sqlite
     {
         private static DatabaseConnection instance;
         private SQLiteConnection sqlConnection;
+        private bool isOpen;
 
         /// <summary>
         /// Prevents a default instance of the SqliteDatabaseConnection class from being created.
         /// </summary>
-        private SqliteDatabaseConnection()
+        private SqliteDatabaseConnection(string sqliteFilePath)
         {
-            sqlConnection = new SQLiteConnection("Data Source=" + Properties.Settings.Default.SqliteConnection + ";Version=3;");
+            sqlConnection = new SQLiteConnection("Data Source=" + sqliteFilePath + ";Version=3;");
         }
 
         /// <summary>
@@ -28,7 +29,11 @@ namespace Postgaarden.Connection.Sqlite
         /// </summary>
         protected override void Open()
         {
-            sqlConnection.Open();
+            if (!isOpen)
+            {
+                sqlConnection.Open();
+                isOpen = true;
+            }
         }
 
         /// <summary>
@@ -36,7 +41,11 @@ namespace Postgaarden.Connection.Sqlite
         /// </summary>
         protected override void Close()
         {
-            sqlConnection.Close();
+            if (isOpen)
+            {
+                sqlConnection.Close();
+                isOpen = false;
+            }
         }
 
         /// <summary>
@@ -50,7 +59,7 @@ namespace Postgaarden.Connection.Sqlite
 
             var command = new SQLiteCommand(sql, sqlConnection);
             var reader = command.ExecuteReader();
-            var sqlReturn = Read(reader);
+            var sqlReturn = Read(reader).ToList();
 
             Close();
 
@@ -81,9 +90,9 @@ namespace Postgaarden.Connection.Sqlite
         /// Gets the instance.
         /// </summary>
         /// <returns></returns>
-        public static DatabaseConnection GetInstance()
+        public static DatabaseConnection GetInstance(string sqliteFilePath)
         {
-            if (instance == null) instance = new SqliteDatabaseConnection();
+            if (instance == null) instance = new SqliteDatabaseConnection(sqliteFilePath);
             return instance;
         }
     }

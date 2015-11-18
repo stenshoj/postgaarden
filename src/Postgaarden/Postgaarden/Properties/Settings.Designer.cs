@@ -22,15 +22,5 @@ namespace Postgaarden.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Postgaarden.sqlite")]
-        public string SqliteConnection {
-            get {
-                return ((string)(this["SqliteConnection"]));
-            }
-        }
     }
 }

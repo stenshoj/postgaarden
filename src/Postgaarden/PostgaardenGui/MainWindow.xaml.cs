@@ -3,6 +3,7 @@ using Postgaarden.Connection.Sqlite;
 using Postgaarden.Crud.Equipments;
 using Postgaarden.Crud.Persons;
 using Postgaarden.Crud.Rooms;
+using Postgaarden.Model.Persons;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,11 +36,14 @@ namespace PostgaardenGui
         {           
             InitializeComponent();
 
-            var empCrud = new SqliteEmployeeCrud(SqliteDatabaseConnection.GetInstance());
-            var cusCrud = new SqliteCustomerCrud(SqliteDatabaseConnection.GetInstance());
-            var equiCrud = new SqliteEquipmentCrud(SqliteDatabaseConnection.GetInstance());
-            var roomCrud = new SqliteRoomCrud(SqliteDatabaseConnection.GetInstance(), equiCrud);
-            bookingCrud = new SqliteBookingCrud(SqliteDatabaseConnection.GetInstance(), roomCrud, cusCrud, empCrud);
+            string filePath = Properties.Settings.Default.Postgaarden;
+            var sqliteInstance = SqliteDatabaseConnection.GetInstance(filePath);
+
+            var empCrud = new SqliteEmployeeCrud(sqliteInstance);
+            var cusCrud = new SqliteCustomerCrud(sqliteInstance);
+            var equiCrud = new SqliteEquipmentCrud(sqliteInstance);
+            var roomCrud = new SqliteRoomCrud(sqliteInstance, equiCrud);
+            bookingCrud = new SqliteBookingCrud(sqliteInstance, roomCrud, cusCrud, empCrud);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -60,10 +64,10 @@ namespace PostgaardenGui
             Booking selecteditem = (Booking)BookingList.SelectedItems[0];
             edit.StartTimePicker.Text = ((Booking)selecteditem).StartTime.ToString();
             edit.EndTimeTextBox.Text = ((Booking)selecteditem).EndTime.ToString();
-            edit.EmployeeIdTextBox.Text = ((Booking)selecteditem).Employee.Name;
+            edit.EmployeeIdTextBox.Text = ((Employee)((Booking)selecteditem).Employee).Id.ToString();
             edit.PriceTextBox.Text = ((Booking)selecteditem).Price.ToString();
-            edit.ConferenceRoomIdTextBox.Text = ((Booking)selecteditem).Room.Name;
-            edit.CustomerCVRTextBox.Text = ((Booking)selecteditem).Customer.Name;
+            edit.ConferenceRoomIdTextBox.Text = ((Booking)selecteditem).Room.Id.ToString();
+            edit.CustomerCVRTextBox.Text = ((Customer)((Booking)selecteditem).Customer).Cvr;
 
             edit.ShowDialog();
             ICollectionView view = CollectionViewSource.GetDefaultView(Bookings);

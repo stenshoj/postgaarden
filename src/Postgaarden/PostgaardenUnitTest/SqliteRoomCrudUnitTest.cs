@@ -43,7 +43,7 @@ namespace PostgaardenUnitTest
 
             crud.Create(room);
 
-            Assert.AreEqual("INSERT INTO ConferenceRoom (Id, Size) VALUES (1, 10);", sql);
+            Assert.AreEqual("INSERT INTO ConferenceRoom (Id, Capacity) VALUES (1, 10);", sql);
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace PostgaardenUnitTest
 
             crud.Read();
 
-            Assert.AreEqual("SELECT Id, Size FROM ConferenceRoom;", sql);
+            Assert.AreEqual("SELECT Id, Capacity FROM ConferenceRoom;", sql);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace PostgaardenUnitTest
 
             crud.Read(1);
 
-            Assert.AreEqual("SELECT Id, Size FROM ConferenceRoom WHERE Id = 1;", sql);
+            Assert.AreEqual("SELECT Id, Capacity FROM ConferenceRoom WHERE Id = 1;", sql);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace PostgaardenUnitTest
 
             crud.Update(room);
 
-            Assert.AreEqual("UPDATE ConferenceRoom SET Size = 10 WHERE Id = 1;", sql);
+            Assert.AreEqual("UPDATE ConferenceRoom SET Capacity = 10 WHERE Id = 1;", sql);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace PostgaardenUnitTest
         public void TestReadBookingToSql()
         {
             string stringToTest =
-                "SELECT Id, Size FROM ConferenceRoom " +
+                "SELECT Id, Capacity FROM ConferenceRoom " +
                 "JOIN Booking ON ConferenceRoom.Id = Booking.ConferenceRoomId " +
                 "WHERE Booking.Id = 1;";
             string sql = "";

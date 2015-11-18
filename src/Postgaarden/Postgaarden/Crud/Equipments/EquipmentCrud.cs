@@ -15,5 +15,6 @@ namespace Postgaarden.Crud.Equipments
     public abstract class EquipmentCrud : Crud<Equipment, int>
     {
         public abstract IEnumerable<Equipment> Read(Room room);
+        public abstract void Update(Equipment equipment, Room room);
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Postgaarden.Crud.Users
 {
-    public abstract class UserCrud : Crud<User, string>
+    public abstract class UserCrud : Crud<User, User>
     {
     }
 }

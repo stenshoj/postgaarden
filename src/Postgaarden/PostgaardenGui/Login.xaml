@@ -13,26 +13,33 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Login" Style="{StaticResource HeadLine1}"/>
+        <TextBlock Text="Velkommen" Style="{StaticResource HeadLine1}"/>
         <StackPanel Grid.Row="1">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="130"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Username" Style="{StaticResource HeadLine2}" />
+                <TextBlock Text="Brugernavn" Style="{StaticResource HeadLine2}" />
                 <TextBox x:Name="usernameTextbox" Style="{StaticResource StretchTextBox}" FontSize="16" Grid.Column="1"/>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="130"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Password"  Style="{StaticResource HeadLine2}"/>
+                <TextBlock Text="Adgangskode"  Style="{StaticResource HeadLine2}"/>
                 <PasswordBox x:Name="passwordTextbox" Style="{StaticResource StretchPasswordBox}" FontSize="16" Grid.Column="1"/>
             </Grid>
         </StackPanel>
         <TextBlock x:Name="failTextBlock"  Style="{StaticResource HeadLine3}" Grid.Row="2" Text=""/>
-        <Button x:Name="loginButton" Click="loginButton_Click" Style="{StaticResource SmallButton}" IsDefault="True" Grid.Row="3" Content="Login"/>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="loginButton" Click="loginButton_Click" Style="{StaticResource SmallButton}" IsDefault="True" Grid.Column="0" Content="Log på"/>
+            <Button x:Name="cancelButton" Click="cancelButton_Click" Style="{StaticResource SmallButton}" IsCancel="True" Grid.Column="1" Content="Annuller"/>
+        </Grid>
     </Grid>
 </Window>

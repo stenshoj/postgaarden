@@ -20,7 +20,7 @@ namespace Postgaarden.Crud.Persons
         public override void Create(Employee entry)
         {
             //Creates a new employee with an Autoincrementet employee id
-            DBConnection.ExecuteQuery($"INSERT INTO Employee (Id, Name, EmailAddress) VALUES ({entry.Id}, {entry.Name}, {entry.EmailAddress})");
+            DBConnection.ExecuteQuery($"INSERT INTO Employee (Id, Name, Email) VALUES ({entry.Id}, {entry.Name}, {entry.EmailAddress})");
         }
 
         public override void Delete(Employee entry)
@@ -31,7 +31,7 @@ namespace Postgaarden.Crud.Persons
 
         public override IEnumerable<Employee> Read()
         {
-            var rows = DBConnection.ExecuteQuery("SELECT Id, Name, EmailAddress FROM Employee");
+            var rows = DBConnection.ExecuteQuery("SELECT Id, Name, Email FROM Employee");
             var employees = new List<Employee>();
             //Goes through a foreach loop to add all the employees to the 'employees' list to be read
             foreach (var row in rows)
@@ -46,8 +46,8 @@ namespace Postgaarden.Crud.Persons
         public override Employee Read(int key)
         {
             //Returns a single employee based on the id given when the method is called 
-            var employee = DBConnection.ExecuteQuery("SELECT Id, Name, EmailAddress FROM Employee WHERE Id="+key+"");
-            return new Employee{ Id = (int)employee.First().ElementAt(0),
+            var employee = DBConnection.ExecuteQuery("SELECT Id, Name, Email FROM Employee WHERE Id="+key+"");
+            return new Employee{ Id = Convert.ToInt32(employee.First().ElementAt(0)),
                                  Name = employee.First().ElementAt(1).ToString(),
                                  EmailAddress = employee.First().ElementAt(2).ToString()
                                  };
@@ -56,7 +56,7 @@ namespace Postgaarden.Crud.Persons
         public override void Update(Employee entry)
         {
             //Updates an employee based on the id given when the method is called
-            DBConnection.ExecuteQuery($"UPDATE Employee SET Name={entry.Name}, EmailAddress={entry.EmailAddress} WHERE Id={entry.Id}");
+            DBConnection.ExecuteQuery($"UPDATE Employee SET Name={entry.Name}, Email={entry.EmailAddress} WHERE Id={entry.Id}");
         }
 
         #region Developed By Chris Wohlert
@@ -64,7 +64,7 @@ namespace Postgaarden.Crud.Persons
         public override Employee Read(Booking booking)
         {
             var cust = DBConnection.ExecuteQuery(
-                "SELECT Id, Name, EmailAddress FROM Customer AS e " +
+                "SELECT e.Id AS EmployeeId, e.Name AS EmployeeName, e.Email AS EmployeeEmail FROM Employee AS e " +
                 "JOIN Booking AS b ON e.Id = b.EmployeeId " +
                 $"WHERE b.Id = {booking.Id};").First();
 

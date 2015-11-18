@@ -17,7 +17,7 @@
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Label Grid.ColumnSpan="2" FontStyle="Oblique" FontSize="25" HorizontalAlignment="Center" FontWeight="Bold">Hotel og KonferenceCenter Postgaarden</Label>
+        <TextBlock Grid.ColumnSpan="2" Style="{StaticResource HeadLine1}" HorizontalAlignment="Center" >Hotel og Konferencecenter Postgaarden</TextBlock>
         <StackPanel Grid.Row="1">
             <StackPanel Grid.Column="0" Orientation="Horizontal">
                 <Button Name="CreateBookingButton" Style="{StaticResource NormalButton}" Content="Ny Booking" Click="CreateBookingButton_Click"></Button>
@@ -34,10 +34,11 @@
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="Id"></GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=StartTime}" Header="Start"></GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=EndTime}" Header="Slut"></GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Pricestr}" Header="Price"></GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=ConferenceRoomId}" Header="Lokale"></GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=CustomerCVR}" Header="Firma"></GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=EmployeeId}" Header="Ansvarlig"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Price}" Header="Pris"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Room.Name}" Header="Lokale"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Customer.Name}" Header="Kunde"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Customer.CompanyName}" Header="Firma"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Employee.Name}" Header="Medarbejder"></GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

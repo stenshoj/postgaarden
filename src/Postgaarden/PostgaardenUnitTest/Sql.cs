@@ -30,7 +30,7 @@ namespace PostgaardenUnitTest
             //Can be used to verify other things when its used for employee
             mock.Verify(x => x.ExecuteQuery(It.IsAny<string>()));
 
-            Assert.AreEqual("INSERT INTO Customer (CompanyName, Name, Cvr, EmailAddress) VALUES (Merch, Jens, 12345678, jens@mail.com)", sql);
+            Assert.AreEqual("INSERT INTO Customer (Company, Name, Cvr, EmailAddress) VALUES (Merch, Jens, 12345678, jens@mail.com)", sql);
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace PostgaardenUnitTest
             //Is used to force the SqliteCustomerCrud to use the Executequery (DBConnection.ExecuteQuery)
             mock.Verify(x => x.ExecuteQuery(It.IsAny<string>()));
 
-            Assert.AreEqual($"UPDATE Customer SET CompanyName={customer.CompanyName}, Name={customer.Name}, EmailAddress={customer.EmailAddress} WHERE Cvr={customer.Cvr}",sql);
+            Assert.AreEqual($"UPDATE Customer SET Company={customer.CompanyName}, Name={customer.Name}, EmailAddress={customer.EmailAddress} WHERE Cvr={customer.Cvr}",sql);
         }
 
         [TestMethod]
@@ -112,7 +112,7 @@ namespace PostgaardenUnitTest
         public void TestReadBookingToSql()
         {
             string stringToTest =
-                "SELECT Cvr, Name, CompanyName, EmailAddress FROM Customer AS c " +
+                "SELECT Cvr, Name, Company, EmailAddress FROM Customer AS c " +
                 "JOIN Booking AS b ON c.Cvr = b.CustumerCVR " + 
                 "WHERE b.Id = 1;";
             string sql = "";

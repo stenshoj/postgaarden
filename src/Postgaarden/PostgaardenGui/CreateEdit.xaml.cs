@@ -38,12 +38,15 @@ namespace PostgaardenGui
         public CreateEdit(string createEdit, ObservableCollection<Booking> bookings, Booking booking = null)
         {
             InitializeComponent();
-            
-            empCrud = new SqliteEmployeeCrud(SqliteDatabaseConnection.GetInstance());
-            cusCrud = new SqliteCustomerCrud(SqliteDatabaseConnection.GetInstance());
-            equiCrud = new SqliteEquipmentCrud(SqliteDatabaseConnection.GetInstance());
-            roomCrud = new SqliteRoomCrud(SqliteDatabaseConnection.GetInstance(), equiCrud);
-            bookingCrud = new SqliteBookingCrud(SqliteDatabaseConnection.GetInstance(), roomCrud, cusCrud, empCrud);
+
+            string filePath = Properties.Settings.Default.Postgaarden;
+            var sqliteInstance = SqliteDatabaseConnection.GetInstance(filePath);
+
+            empCrud = new SqliteEmployeeCrud(sqliteInstance);
+            cusCrud = new SqliteCustomerCrud(sqliteInstance);
+            equiCrud = new SqliteEquipmentCrud(sqliteInstance);
+            roomCrud = new SqliteRoomCrud(sqliteInstance, equiCrud);
+            bookingCrud = new SqliteBookingCrud(sqliteInstance, roomCrud, cusCrud, empCrud);
 
             this.createEdit = createEdit;
             Bookings = bookings;
@@ -74,19 +77,25 @@ namespace PostgaardenGui
             {
                 case "CREATE":
                     Booking booking = new Booking();
-                    booking.StartTime = Convert.ToDateTime(StartTimePicker.Text);
-                    booking.EndTime = Convert.ToDateTime(EndTimeTextBox.Text);
+                    if (!booking.SetTime(Convert.ToDateTime(StartTimePicker.Text), Convert.ToDateTime(EndTimeTextBox.Text)))
+                    {
+                        Xceed.Wpf.Toolkit.MessageBox.Show("Sluttidspunktet skal være senere end starttidspunktet.");
+                        return;
+                    }
                     booking.Room = roomCrud.Read(Convert.ToInt32(ConferenceRoomIdTextBox.Text));
                     booking.Customer = cusCrud.Read(CustomerCVRTextBox.Text);
                     booking.Employee = empCrud.Read(Convert.ToInt32(EmployeeIdTextBox.Text));
                     booking.Price = Convert.ToDouble(PriceTextBox.Text);
-                    bookingCrud.Create(new Booking());
+                    bookingCrud.Create(booking);
                     Bookings.Add(booking);
                     break;
                 case "EDIT":
                     booking = Booking;
-                    booking.StartTime = Convert.ToDateTime(StartTimePicker.Text);
-                    booking.EndTime = Convert.ToDateTime(EndTimeTextBox.Text);
+                    if (!booking.SetTime(Convert.ToDateTime(StartTimePicker.Text), Convert.ToDateTime(EndTimeTextBox.Text)))
+                    {
+                        Xceed.Wpf.Toolkit.MessageBox.Show("Sluttidspunktet skal være senere end starttidspunktet.");
+                        return;
+                    }
                     booking.Room = roomCrud.Read(Convert.ToInt32(ConferenceRoomIdTextBox.Text));
                     booking.Customer = cusCrud.Read(CustomerCVRTextBox.Text);
                     booking.Employee = empCrud.Read(Convert.ToInt32(EmployeeIdTextBox.Text));
