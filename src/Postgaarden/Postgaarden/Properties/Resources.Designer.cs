@@ -59,14 +59,5 @@ namespace Postgaarden.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string SqliteConnectionString {
-            get {
-                return ResourceManager.GetString("SqliteConnectionString", resourceCulture);
-            }
-        }
     }
 }

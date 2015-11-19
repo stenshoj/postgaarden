@@ -56,7 +56,7 @@ namespace PostgaardenUnitTest
             mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Callback((string s) => sql = s).Returns(() => new Object[][] { new[] { "1" } });
             crud.Create(booking);
 
-            Assert.AreEqual($"INSERT INTO Booking (StartTime, EndTime, ConferenceRoomId, EmployeeId, CustomerCvr, Price) VALUES ({booking.StartTime.ToString("yyyy-mm-dd hh:mm")}, {booking.EndTime.ToString("yyyy-mm-dd hh:mm")}, {booking.Room.Id}, {((Employee)booking.Employee).Id}, {((Customer)booking.Customer).Cvr}, {booking.Price}); SELECT MAX (Id) FROM Booking;", sql);
+            Assert.AreEqual($"INSERT INTO Booking (StartTime, EndTime, ConferenceRoomId, EmployeeId, CustomerCvr, Price) VALUES ({booking.StartTime.ToString("yyyy-MM-dd hh:mm")}, {booking.EndTime.ToString("yyyy-MM-dd hh:mm")}, {booking.Room.Id}, {((Employee)booking.Employee).Id}, {((Customer)booking.Customer).Cvr}, {booking.Price}); SELECT MAX (Id) FROM Booking;", sql);
 
         }
 
@@ -74,8 +74,8 @@ namespace PostgaardenUnitTest
             employeeCrud.Setup(x => x.Read(It.IsAny<Booking>())).Returns(new Employee { Id = 1, EmailAddress = "Something@Somewhere.dk", Name = "Anders" });
 
             mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Returns(() => new object[][] { new object[] { booking.Id,
-                                                                                                              booking.StartTime.ToString("yyyy-mm-dd,hh:mm"),
-                                                                                                              booking.EndTime.ToString("yyyy-mm-dd,hh:mm"),
+                                                                                                              booking.StartTime.ToString("yyyy-MM-dd,hh:mm"),
+                                                                                                              booking.EndTime.ToString("yyyy-MM-dd,hh:mm"),
                                                                                                               booking.Room.Id,
                                                                                                               ((Employee)booking.Employee).Id,
                                                                                                               ((Customer)booking.Customer).Cvr,
@@ -88,8 +88,8 @@ namespace PostgaardenUnitTest
             var employee = bookings.First().Employee as Employee;
             var room = bookings.First().Room as Room;
 
-            Assert.AreEqual(booking.StartTime.ToString("yyyy-mm-dd hh:mm"), bookings.First().StartTime.ToString("yyyy-mm-dd hh:mm"));
-            Assert.AreEqual(booking.EndTime.ToString("yyyy-mm-dd hh:mm"), bookings.First().EndTime.ToString("yyyy-mm-dd hh:mm"));
+            Assert.AreEqual(booking.StartTime.ToString("yyyy-MM-dd hh:mm"), bookings.First().StartTime.ToString("yyyy-MM-dd hh:mm"));
+            Assert.AreEqual(booking.EndTime.ToString("yyyy-MM-dd hh:mm"), bookings.First().EndTime.ToString("yyyy-MM-dd hh:mm"));
             Assert.AreEqual(1, room.Id);
             Assert.AreEqual(4, room.Size);
             Assert.AreEqual(1, employee.Id);
@@ -116,8 +116,8 @@ namespace PostgaardenUnitTest
             employeeCrud.Setup(x => x.Read(It.IsAny<Booking>())).Returns(new Employee { Id = 1, EmailAddress = "Something@Somewhere.dk", Name = "Anders" });
 
             mock.Setup(x => x.ExecuteQuery(It.IsAny<string>())).Returns(() => new object[][] { new object[] { booking.Id,
-                                                                                                              booking.StartTime.ToString("yyyy-mm-dd,hh:mm"),
-                                                                                                              booking.EndTime.ToString("yyyy-mm-dd,hh:mm"),
+                                                                                                              booking.StartTime.ToString("yyyy-MM-dd,hh:mm"),
+                                                                                                              booking.EndTime.ToString("yyyy-MM-dd,hh:mm"),
                                                                                                               booking.Room.Id,
                                                                                                               ((Employee)booking.Employee).Id,
                                                                                                               ((Customer)booking.Customer).Cvr,
@@ -130,8 +130,8 @@ namespace PostgaardenUnitTest
             var employee = bookings.Employee as Employee;
             var room = bookings.Room as Room;
 
-            Assert.AreEqual(booking.StartTime.ToString("yyyy-mm-dd hh:mm"), bookings.StartTime.ToString("yyyy-mm-dd hh:mm"));
-            Assert.AreEqual(booking.EndTime.ToString("yyyy-mm-dd hh:mm"), bookings.EndTime.ToString("yyyy-mm-dd hh:mm"));
+            Assert.AreEqual(booking.StartTime.ToString("yyyy-MM-dd hh:mm"), bookings.StartTime.ToString("yyyy-MM-dd hh:mm"));
+            Assert.AreEqual(booking.EndTime.ToString("yyyy-MM-dd hh:mm"), bookings.EndTime.ToString("yyyy-MM-dd hh:mm"));
             Assert.AreEqual(1, room.Id);
             Assert.AreEqual(4, room.Size);
             Assert.AreEqual(1, employee.Id);

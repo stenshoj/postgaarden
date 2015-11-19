@@ -8,6 +8,8 @@ namespace Postgaarden.Model.Persons
 {
     public class Employee : Person
     {
+        //Created by Jens Kloster
+
         private int id;
 
         public int Id

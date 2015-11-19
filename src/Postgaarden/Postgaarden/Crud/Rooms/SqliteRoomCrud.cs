@@ -34,7 +34,7 @@ namespace Postgaarden.Crud.Rooms
         /// <param name="entry">The entry.</param>
         public override void Create(Room entry)
         {
-            DBConnection.ExecuteQuery($"INSERT INTO ConferenceRoom (Id, Size) VALUES ({entry.Id}, {entry.Size});");
+            DBConnection.ExecuteQuery($"INSERT INTO ConferenceRoom (Id, Capacity) VALUES ({entry.Id}, {entry.Size});");
         }
 
         /// <summary>
@@ -54,13 +54,19 @@ namespace Postgaarden.Crud.Rooms
         /// </returns>
         public override IEnumerable<Room> Read()
         {
-            var rooms = DBConnection.ExecuteQuery("SELECT Id, Size FROM ConferenceRoom;");
+            var rooms = DBConnection.ExecuteQuery("SELECT Id, Capacity FROM ConferenceRoom;");
             return ParseToRoom(rooms);
         }
 
         public override Room Read(Booking booking)
         {
-            throw new NotImplementedException();
+            var room = DBConnection.ExecuteQuery(
+                $"SELECT r.Id AS RoomId, Capacity FROM ConferenceRoom AS r "+
+                $"JOIN Booking ON r.Id = Booking.ConferenceRoomId "+
+                $"WHERE Booking.Id = {booking.Id};"
+                );
+
+            return ParseToRoom(room).FirstOrDefault();
         }
 
         /// <summary>
@@ -72,7 +78,7 @@ namespace Postgaarden.Crud.Rooms
         /// </returns>
         public override Room Read(int key)
         {
-            var room = DBConnection.ExecuteQuery($"SELECT Id, Size FROM ConferenceRoom WHERE Id = {key};");
+            var room = DBConnection.ExecuteQuery($"SELECT Id, Capacity FROM ConferenceRoom WHERE Id = {key};");
             return ParseToRoom(room).First();
         }
 
@@ -82,7 +88,7 @@ namespace Postgaarden.Crud.Rooms
         /// <param name="entry">The entry.</param>
         public override void Update(Room entry)
         {
-            DBConnection.ExecuteQuery($"UPDATE ConferenceRoom SET Size = {entry.Size} WHERE Id = {entry.Id};");
+            DBConnection.ExecuteQuery($"UPDATE ConferenceRoom SET Capacity = {entry.Size} WHERE Id = {entry.Id};");
         }
 
         private IEnumerable<Room> ParseToRoom(IEnumerable<IEnumerable<object>> objectToParse)
@@ -95,6 +101,7 @@ namespace Postgaarden.Crud.Rooms
                 foreach (var e in equipmentCrud.Read(room))
                 {
                     room.Equipments.Add(e);
+                    equipmentCrud.Update(e, room);
                 }
                 yield return room;
             }

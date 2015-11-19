@@ -41,9 +41,9 @@ namespace Postgaarden.Crud.Users
             return users;
         }
 
-        public override User Read(string key)
+        public override User Read(User key)
         {
-            return users.FirstOrDefault(user => user.Username.Equals(key));
+            return users.FirstOrDefault(user => user.Username.Equals(key.Username) && user.Password.Equals(key.Password));
         }
 
         public override void Update(User entry)

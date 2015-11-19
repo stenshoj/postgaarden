@@ -91,7 +91,7 @@
                                 <ListBox Name="EquipmentListBox"
                                          BorderThickness="0"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                         ItemsSource="{Binding Equipment}">
+                                         ItemsSource="{Binding Equipments}">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <WrapPanel></WrapPanel>

@@ -34,7 +34,7 @@ namespace Postgaarden.Model.Users
         /// <returns>Returns true if the user provided the correct password, false if not.</returns>
         public bool Login(User user)
         {
-            var crudUser = UserCrud.Read(user.Username);
+            var crudUser = UserCrud.Read(user);
             if (crudUser != null)
             {
                 crudUser.Password.Equals(user.Password);

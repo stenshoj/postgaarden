@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Postgaarden;
+using Postgaarden.Connection.Sqlite;
+using Postgaarden.Crud.Equipments;
+using Postgaarden.Crud.Persons;
+using Postgaarden.Crud.Rooms;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -22,13 +27,27 @@ namespace PostgaardenGui
     /// </summary>
     public partial class CreateEdit : Window
     {
-        private BookingCrud bookingCrud = new BookingCrud();
+        private EmployeeCrud empCrud;
+        private CustomerCrud cusCrud;
+        private EquipmentCrud equiCrud;
+        private RoomCrud roomCrud;
+        private BookingCrud bookingCrud;
         public ObservableCollection<Booking> Bookings { get; set; }
         public Booking Booking { get; set; }
         public string createEdit { get; set; }
         public CreateEdit(string createEdit, ObservableCollection<Booking> bookings, Booking booking = null)
         {
             InitializeComponent();
+
+            string filePath = Properties.Settings.Default.Postgaarden;
+            var sqliteInstance = SqliteDatabaseConnection.GetInstance(filePath);
+
+            empCrud = new SqliteEmployeeCrud(sqliteInstance);
+            cusCrud = new SqliteCustomerCrud(sqliteInstance);
+            equiCrud = new SqliteEquipmentCrud(sqliteInstance);
+            roomCrud = new SqliteRoomCrud(sqliteInstance, equiCrud);
+            bookingCrud = new SqliteBookingCrud(sqliteInstance, roomCrud, cusCrud, empCrud);
+
             this.createEdit = createEdit;
             Bookings = bookings;
             if (booking != null)
@@ -58,22 +77,28 @@ namespace PostgaardenGui
             {
                 case "CREATE":
                     Booking booking = new Booking();
-                    booking.StartTime = Convert.ToDateTime(StartTimePicker.Text);
-                    booking.EndTime = Convert.ToDateTime(EndTimeTextBox.Text);
-                    booking.ConferenceRoomId = Convert.ToInt32(ConferenceRoomIdTextBox.Text);
-                    booking.CustomerCVR = CustomerCVRTextBox.Text;
-                    booking.EmployeeId = Convert.ToInt32(EmployeeIdTextBox.Text);
+                    if (!booking.SetTime(Convert.ToDateTime(StartTimePicker.Text), Convert.ToDateTime(EndTimeTextBox.Text)))
+                    {
+                        Xceed.Wpf.Toolkit.MessageBox.Show("Sluttidspunktet skal være senere end starttidspunktet.");
+                        return;
+                    }
+                    booking.Room = roomCrud.Read(Convert.ToInt32(ConferenceRoomIdTextBox.Text));
+                    booking.Customer = cusCrud.Read(CustomerCVRTextBox.Text);
+                    booking.Employee = empCrud.Read(Convert.ToInt32(EmployeeIdTextBox.Text));
                     booking.Price = Convert.ToDouble(PriceTextBox.Text);
-                    bookingCrud.Create(new Booking());
+                    bookingCrud.Create(booking);
                     Bookings.Add(booking);
                     break;
                 case "EDIT":
                     booking = Booking;
-                    booking.StartTime = Convert.ToDateTime(StartTimePicker.Text);
-                    booking.EndTime = Convert.ToDateTime(EndTimeTextBox.Text);
-                    booking.ConferenceRoomId = Convert.ToInt32(ConferenceRoomIdTextBox.Text);
-                    booking.CustomerCVR = CustomerCVRTextBox.Text;
-                    booking.EmployeeId = Convert.ToInt32(EmployeeIdTextBox.Text);
+                    if (!booking.SetTime(Convert.ToDateTime(StartTimePicker.Text), Convert.ToDateTime(EndTimeTextBox.Text)))
+                    {
+                        Xceed.Wpf.Toolkit.MessageBox.Show("Sluttidspunktet skal være senere end starttidspunktet.");
+                        return;
+                    }
+                    booking.Room = roomCrud.Read(Convert.ToInt32(ConferenceRoomIdTextBox.Text));
+                    booking.Customer = cusCrud.Read(CustomerCVRTextBox.Text);
+                    booking.Employee = empCrud.Read(Convert.ToInt32(EmployeeIdTextBox.Text));
                     booking.Price = Convert.ToDouble(PriceTextBox.Text);
                     bookingCrud.Update(booking);
 

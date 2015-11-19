@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Postgaarden.Crud.Persons
 {
+    //Created by Jens Kloster
     public abstract class EmployeeCrud : Crud<Employee, int>
     {
         public abstract Employee Read(Booking booking);

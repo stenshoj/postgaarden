@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Postgaarden.Model.Rooms;
 
 namespace Postgaarden.Crud.Equipments
 {
@@ -14,5 +15,6 @@ namespace Postgaarden.Crud.Equipments
     public abstract class EquipmentCrud : Crud<Equipment, int>
     {
         public abstract IEnumerable<Equipment> Read(Room room);
+        public abstract void Update(Equipment equipment, Room room);
     }
 }

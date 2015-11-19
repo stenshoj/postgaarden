@@ -29,8 +29,8 @@ namespace PostgaardenLogin
         {
             InitializeComponent();
 
-            //null will be SqliteDatabaseConnection when the database is used.
-            var crud = new SqliteUserCrud(null);
+            var connection = SqliteDatabaseConnection.GetInstance(PostgaardenGui.Properties.Settings.Default.Postgaarden);
+            var crud = new SqliteUserCrud(connection);
             handler = new LoginHandler(crud);
         }
 
@@ -46,6 +46,11 @@ namespace PostgaardenLogin
             {
                 failTextBlock.Text = "Username or Password is not correct.";
             }
+        }
+
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
