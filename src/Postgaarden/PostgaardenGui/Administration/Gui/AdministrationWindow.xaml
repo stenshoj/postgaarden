@@ -1,0 +1,122 @@
+﻿<Window x:Class="PostgaardenGui.Administration.Gui.AdministrationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PostgaardenGui.Administration.Gui"
+        mc:Ignorable="d"
+        Title="AdministrationWindow">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Rum">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Name="MenuColumn" Width="220"></ColumnDefinition>
+                        <ColumnDefinition Name="ContentColumn" Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Style="{StaticResource HeadLine1}" Text="Filter"></TextBlock>
+                        <TextBlock Style="{StaticResource HeadLine3}" Text="Antal personer:"></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Name="SetSizeTextBox" Style="{StaticResource NormalTextBox}"></TextBox>
+                            <CheckBox Name="SetMinimumCheckBox" Style="{StaticResource VerticalCenteredCheckBox}" Content="Minimum" IsChecked="True"></CheckBox>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource HeadLine3}" Text="Udstyr"></TextBlock>
+                        <ListBox Name="EquipmentFilterListBox"
+                     Style="{StaticResource ListBoxFormat}"
+                     HorizontalContentAlignment="Stretch"
+                     Height="120"
+                     ItemsSource="{Binding EquipmentFiltlerObservableCollection}"
+                     SelectionChanged="EquipmentFilterListBox_OnSelectionChanged">
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Name="EquimentTextBlock" Style="{StaticResource TextBlockFormat}" Text="{Binding}"/>
+                                        <Separator></Separator>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Filtrer på:" Margin="4"></Label>
+                            <TextBox Name="FilterTextTextBox" Grid.Column="1" Margin="4" HorizontalAlignment="Stretch" TextChanged="FilterTextTextBox_OnTextChanged"></TextBox>
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal">
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Button Name="AddFilterButton" Style="{StaticResource NormalButton}" Content="Tilføj filter" IsEnabled="False" Click="AddFilterButton_OnClick"></Button>
+                            <Button Name="RemoveFilterButton" Style="{StaticResource NormalButton}" Content="Fjern filter" IsEnabled="False" Click="RemoveFilterButton_OnClick"></Button>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Button Name="SearchEquipmentButton" Style="{StaticResource NormalButton}" Content="Søg" Click="SearchEquipmentButton_OnClick"></Button>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <ListBox Name="RoomListBox"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 Grid.Column="1"
+                 Style="{StaticResource ListBoxFormat}"
+                 HorizontalContentAlignment="Stretch"
+                 ItemsSource="{Binding RoomObservableCollection}">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Style="{StaticResource HeadLine3}" Text="Rum:"></TextBlock>
+                                            <TextBlock Style="{StaticResource TextBlockFormat}" Text="{Binding Id}"/>
+                                            <TextBlock Style="{StaticResource HeadLine3}" Text="Størrelse:"></TextBlock>
+                                            <TextBlock Style="{StaticResource TextBlockFormat}" Text="{Binding Size}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Style="{StaticResource HeadLine3}" Text="Udstyr:"></TextBlock>
+                                            <ListBox Name="EquipmentListBox"
+                                         BorderThickness="0"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                         ItemsSource="{Binding Equipments}">
+                                                <ListBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel></WrapPanel>
+                                                    </ItemsPanelTemplate>
+                                                </ListBox.ItemsPanel>
+
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Style="{StaticResource TextBlockFormat}" Text="{Binding Name}"/>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Separator></Separator>
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="Medarbejdere"></TabItem>
+            <TabItem Header="Brugere"></TabItem>
+            <TabItem Header="Roller"></TabItem>
+        </TabControl>
+    </Grid>
+</Window>
