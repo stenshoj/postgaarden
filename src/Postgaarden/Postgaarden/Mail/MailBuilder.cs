@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Postgaarden.Connection;
 //using PostgaardenMail.Dummy;
 //using System.Net;
 //using System.Net.Mail;
 //using Postgaarden;
 using Postgaarden.Model.Persons;
 
-namespace Postgaarden
+namespace Postgaarden.Mail
 {
-    class MailBuilder
+    public class MailBuilder
     {
 
-        public MailBuilder(Mailtemplate template)
+
+        public MailBuilder()
         {
 
         }

@@ -3,6 +3,7 @@ using Postgaarden.Connection.Sqlite;
 using Postgaarden.Crud.Equipments;
 using Postgaarden.Crud.Persons;
 using Postgaarden.Crud.Rooms;
+using PostgaardenMail;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,7 +20,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Xceed.Wpf.Toolkit;
 
-
 namespace PostgaardenGui
 {
     /// Made by Christoffer
@@ -28,6 +28,7 @@ namespace PostgaardenGui
     /// </summary>
     public partial class CreateEdit : Window
     {
+        private MailBuilder mailBuilder = new MailBuilder();
         private EmployeeCrud empCrud;
         private CustomerCrud cusCrud;
         private EquipmentCrud equiCrud;
@@ -89,6 +90,10 @@ namespace PostgaardenGui
                     booking.Price = Convert.ToDouble(PriceTextBox.Text);
                     bookingCrud.Create(booking);
                     Bookings.Add(booking);
+                    var mail = mailBuilder.CreateMail(booking);
+                    var mailServer = "smtp.gmail.com";
+                    var smtpHandler = new SmtpMailHandler(mail, mailServer);
+                    smtpHandler.SendMail();
                     break;
                 case "EDIT":
                     booking = Booking;

@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-using PostgaardenMail.Dummy;
 
 namespace PostgaardenMail
 {
@@ -15,7 +14,7 @@ namespace PostgaardenMail
     */
     public class SmtpMailHandler
     {
-        public SmtpMailHandler(Mail mail, string mailServer)
+        public SmtpMailHandler(Mailtemplate mail, string mailServer)
         {
             Mail = mail;
             MailServer = mailServer;
@@ -50,7 +49,7 @@ namespace PostgaardenMail
             message.Dispose();
         }
 
-        public Mail Mail { get; set; }
+        public Mailtemplate Mail { get; set; }
         public string MailServer { get; set; }
     }
 }
