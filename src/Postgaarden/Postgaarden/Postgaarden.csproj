@@ -109,6 +109,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mail\MailBuilder.cs" />
+    <Compile Include="Model\EmailConfirmation\Mailtemplate.cs" />
     <Compile Include="Model\Bookings\Booking.cs" />
     <Compile Include="Crud\Crud.cs" />
     <Compile Include="Connection\DatabaseConnection.cs" />
@@ -175,6 +177,13 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+    <ProjectReference Include="..\PostgaardenMail\PostgaardenMail.csproj">
+      <Project>{668089a6-6a60-4f79-8d40-db348788a662}</Project>
+      <Name>PostgaardenMail</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Crud\EmailConfirmation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.98.1\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.98.1\build\net451\System.Data.SQLite.Core.targets')" />
