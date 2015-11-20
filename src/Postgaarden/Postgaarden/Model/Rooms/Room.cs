@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Postgaarden.Model.Rooms
 {
     /*
         Chris Wohlert
     */
+    [XmlType("Room")]
+    [XmlInclude(typeof(Equipment)), XmlInclude(typeof(ConferenceRoom))]
     public abstract class Room
     {
         /// <summary>
@@ -18,6 +21,7 @@ namespace Postgaarden.Model.Rooms
         /// <value>
         /// The identifier.
         /// </value>
+        [XmlElement("Id", Order = 1)]
         public int Id { get; set; }
 
         /// <summary>
@@ -26,6 +30,7 @@ namespace Postgaarden.Model.Rooms
         /// <value>
         /// The name.
         /// </value>
+        [XmlElement("Name", Order = 3)]
         public abstract String Name{ get; }
 
         /// <summary>
@@ -34,6 +39,7 @@ namespace Postgaarden.Model.Rooms
         /// <value>
         /// The size.
         /// </value>
+        [XmlElement("Size", Order = 2)]
         public int Size { get; set; }
 
         /// <summary>
@@ -42,6 +48,8 @@ namespace Postgaarden.Model.Rooms
         /// <value>
         /// The equipments.
         /// </value>
+        [XmlArray("Equipments", Order = 3)]
+        [XmlArrayItem("Equipment")]
         public List<Equipment> Equipments { get; private set; }
 
 

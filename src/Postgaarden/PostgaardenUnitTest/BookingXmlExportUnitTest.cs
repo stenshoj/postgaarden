@@ -6,17 +6,29 @@ using Postgaarden.Model.Equipments;
 using Moq;
 using System.IO;
 using Postgaarden;
+using Postgaarden.Model.Bookings;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace PostgaardenUnitTest
 {
+    /*
+        Developed by Christoffer Stenshøj
+    */
     [TestClass]
     public class BookingXmlExportUnitTest
     {
+        /// <summary>
+        /// Tests the XML export.
+        /// </summary>
         [TestMethod]
         public void TestXmlExport()
         {
-            string xml = "";
+            Type[] types = { typeof(Person), typeof(Customer), typeof(Employee), typeof(Room), typeof(ConferenceRoom), typeof(Equipment) };
+            XmlSerializer serializer = new XmlSerializer(typeof(Booking), types);
+            StringBuilder xml = new StringBuilder();
             Booking b = new Booking();
+            Booking c;
             b.Id = 1;
             b.Price = 399;
             b.Employee = new Employee { EmailAddress = "mail@mail.dk", Id = 1, Name="Bo" };
@@ -28,48 +40,30 @@ namespace PostgaardenUnitTest
             room.Id = 1;
             room.Size = 50;
             b.Room = room;
-            var writerMock = new Mock<TextWriter>();
-            writerMock.Setup(x => x.Write(It.IsAny<string>())).Callback((string s) => xml = s);
-            writerMock.Setup(x => x.WriteAsync(It.IsAny<string>())).Callback((string s) => xml = s);
-            writerMock.Setup(x => x.WriteLine(It.IsAny<string>())).Callback((string s) => xml = s);
-            writerMock.Setup(x => x.WriteLineAsync(It.IsAny<string>())).Callback((string s) => xml = s);
+            
+            StringWriter writer = new StringWriter(xml);
+            BookingXmlExport.Export(b, writer);
+            StringReader reader = new StringReader(xml.ToString());
+            c = (Booking)serializer.Deserialize(reader);
+            Assert.AreEqual(b.Id, c.Id);
+            Assert.AreEqual(b.Price, c.Price);
+            Assert.AreEqual(b.StartTime, c.StartTime);
+            Assert.AreEqual(b.EndTime, c.EndTime);
+            Assert.AreEqual(b.Employee.Name, c.Employee.Name);
+            Assert.AreEqual(b.Employee.EmailAddress, c.Employee.EmailAddress);
+            Assert.AreEqual(((Employee)b.Employee).Id, ((Employee)c.Employee).Id);
+            Assert.AreEqual(b.Customer.Name, c.Customer.Name);
+            Assert.AreEqual(b.Customer.EmailAddress, c.Customer.EmailAddress);
+            Assert.AreEqual(((Customer)b.Customer).Cvr, ((Customer)c.Customer).Cvr);
+            Assert.AreEqual(((Customer)b.Customer).CompanyName, ((Customer)c.Customer).CompanyName);
+            Assert.AreEqual(b.Room.Id, c.Room.Id);
+            Assert.AreEqual(b.Room.Size, c.Room.Size);
+            Assert.AreEqual(b.Room.Name, c.Room.Name);
+            Assert.AreEqual(b.Room.Equipments[0].Id, c.Room.Equipments[0].Id);
+            Assert.AreEqual(b.Room.Equipments[0].Name, c.Room.Equipments[0].Name);
+            Assert.AreEqual(b.Room.Equipments[1].Id, c.Room.Equipments[1].Id);
+            Assert.AreEqual(b.Room.Equipments[1].Name, c.Room.Equipments[1].Name);
 
-            Assert.AreEqual(data, xml);
         }
-
-        private string data =
-            "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-            "<Booking xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" +
-                "<Id>1</Id>" +
-                "<Price>399.0</Price>" +
-                "<Startime>2000-08-08T00:00:00</Startime>" +
-                "<EndTime>2000-08-09T00:00:00</EndTime>" +
-                "<Employee>" +
-                    "<Id>1</Id>" +
-                    "<Name>Bo</Name>" +
-                    "<EmailAddress>mail @mail.dk</EmailAddress>" +
-                "</Employee>" +
-                "<Customer>" +
-                    "<CompanyName>Ecco</CompanyName>" +
-                    "<CVR>12345678</CVR>" +
-                    "<Name>Niels</Name>" +
-                    "<EmailAddress>niels @mail.dk</EmailAddress>" +
-                "</Customer>" +
-                "<Room>" +
-                    "<Id>1</Id>" +
-                    "<Size>50</Size>" +
-                    "<Name>Mødelokale 1</Name>" +
-                    "<Equipments>" +
-                        "<Equipment>" +
-                            "<Id>1</Id>" +
-                            "<Name>Stol</Name>" +
-                        "</Equipment>" +
-                        "<Equipment>" +
-                            "<Id>2</Id>" +
-                            "<Name>Grill</Name>" +
-                        "</Equipment>" +
-                    "</Equipments>" +
-                "<Room>" +
-            "</Booking>";
     }
 }
