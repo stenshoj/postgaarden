@@ -67,6 +67,10 @@
             <Setter Property="Margin" Value="4"></Setter>
         </Style>
 
+        <Style TargetType="ComboBox" x:Key="NormalComboBox">
+            <Setter Property="Margin" Value="4"></Setter>
+        </Style>
+
         <Style TargetType="TextBlock" x:Key="TextBlockFormat">
             <Setter Property="Margin" Value="4"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
