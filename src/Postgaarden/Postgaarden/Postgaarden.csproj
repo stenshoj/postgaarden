@@ -119,6 +119,7 @@
     <Compile Include="Crud\Rooms\SqliteRoomCrud.cs" />
     <Compile Include="Crud\Users\SqliteUserCrud.cs" />
     <Compile Include="Crud\Users\UserCrud.cs" />
+    <Compile Include="Model\Bookings\BookingHandler.cs" />
     <Compile Include="Model\Persons\Customer.cs" />
     <Compile Include="Crud\Persons\CustomerCrud.cs" />
     <Compile Include="Model\Persons\Employee.cs" />
