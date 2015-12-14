@@ -63,10 +63,11 @@ namespace PostgaardenGui
             CreateEdit edit = new CreateEdit("Edit", Bookings, (Booking)BookingList.SelectedItems[0]);
             Booking selecteditem = (Booking)BookingList.SelectedItems[0];
             edit.StartTimePicker.Text = ((Booking)selecteditem).StartTime.ToString();
-            edit.EndTimeTextBox.Text = ((Booking)selecteditem).EndTime.ToString();
+            edit.EndTimePicker.Text = ((Booking)selecteditem).EndTime.ToString();
             edit.EmployeeIdTextBox.Text = ((Employee)((Booking)selecteditem).Employee).Id.ToString();
             edit.PriceTextBox.Text = ((Booking)selecteditem).Price.ToString();
-            edit.ConferenceRoomIdTextBox.Text = ((Booking)selecteditem).Room.Id.ToString();
+            edit.SizeTextBox.Text = selecteditem.Room.Size.ToString();
+            //edit.ConferenceRoomIdTextBox.Text = ((Booking)selecteditem).Room.Id.ToString();
             edit.CustomerCVRTextBox.Text = ((Customer)((Booking)selecteditem).Customer).Cvr;
 
             edit.ShowDialog();

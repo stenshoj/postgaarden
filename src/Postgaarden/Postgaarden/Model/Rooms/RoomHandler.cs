@@ -38,8 +38,10 @@ namespace Postgaarden.Model.Rooms
         {
             return
             Rooms.Where(
-                room => room.Equipments.Select(
-                    equip => equip.Name).Intersect(equipment).Count() == equipment.Count()).ToList();
+                room => room.Equipments
+                .Select(equip => equip.Name)
+                .Intersect(equipment).Count() == equipment.Count())
+                .ToList();
         }
 
         /// <summary>

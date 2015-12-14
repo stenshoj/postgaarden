@@ -7,11 +7,11 @@
         xmlns:local="clr-namespace:PostgaardenGui"
         mc:Ignorable="d"
         Title="Create_Edit" 
-        Width="370"
-        MinWidth="370"
-        Height="300"
-        MinHeight="300"
-        MaxHeight="300"
+        Width="500"
+        MinWidth="500"
+        Height="290.4"
+        MinHeight="320"
+        MaxHeight="320"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Loaded="Window_Loaded"
         WindowStyle="ToolWindow">
@@ -19,9 +19,12 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="170"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
@@ -33,23 +36,57 @@
         <TextBlock  Style="{StaticResource HeadLine1}" Name="CreateEditHeadline" Grid.ColumnSpan="2" DataContext="{Binding createEdit, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
 
         <TextBlock Style="{StaticResource TextBlockFormat}" Grid.Row="1" Grid.Column="0" Name="StartTimeTextBlock" Text="Start:" TextAlignment="Center"></TextBlock>
-        <xctk:DateTimePicker Name="StartTimePicker" Style="{StaticResource NormalDatePicker}" Grid.Row="1" Grid.Column="1"></xctk:DateTimePicker>
+        <xctk:DateTimePicker Name="StartTimePicker" ValueChanged="StartTimePicker_ValueChanged" Style="{StaticResource NormalDatePicker}" Grid.Row="1" Grid.Column="1"></xctk:DateTimePicker>
 
         <TextBlock Style="{StaticResource TextBlockFormat}" Name="EndTimeTextBlock" Grid.Row="2" Grid.Column="0" Text="Slut:" TextAlignment="Center"></TextBlock>
-        <xctk:DateTimePicker Name="EndTimeTextBox" Style="{StaticResource NormalDatePicker}" Grid.Row="2" Grid.Column="1"></xctk:DateTimePicker>
+        <xctk:DateTimePicker Name="EndTimePicker" ValueChanged="EndTimePicker_ValueChanged" Style="{StaticResource NormalDatePicker}" Grid.Row="2" Grid.Column="1"></xctk:DateTimePicker>
 
         <TextBlock Style="{StaticResource TextBlockFormat}" Grid.Row="3" Grid.Column="0" Name="PriceTextBlock" Text="Pris:" TextAlignment="Center"></TextBlock>
         <TextBox Style="{StaticResource StretchTextBox}" Grid.Row="3" Grid.Column="1" Name="PriceTextBox"></TextBox>
 
-        <TextBlock Style="{StaticResource TextBlockFormat}" Name="ConferenceRoomIdTextBlock" Grid.Row="4" Grid.Column="0" Text="Mødelokale nr.:" TextAlignment="Center"></TextBlock>
-        <TextBox Style="{StaticResource StretchTextBox}" Grid.Row="4" Grid.Column="1" Name="ConferenceRoomIdTextBox"></TextBox>
+        <TextBlock Style="{StaticResource TextBlockFormat}" Grid.Row="4" Grid.Column="0" Name="SizeTextBlock" Text="Kapacitet:" TextAlignment="Center"></TextBlock>
+        <TextBox Style="{StaticResource StretchTextBox}" TextChanged="SizeTextBox_TextChanged" Grid.Row="4" Grid.Column="1" Name="SizeTextBox"></TextBox>
 
-        <TextBlock Style="{StaticResource TextBlockFormat}" Grid.Row="5" Grid.Column="0" Name="CustomerCVRTextBlock" Text="Kunde CVR" TextAlignment="Center"></TextBlock>
-        <TextBox Style="{StaticResource StretchTextBox}" Grid.Row="5" Grid.Column="1" Name="CustomerCVRTextBox"></TextBox>
+        <TextBlock Style="{StaticResource TextBlockFormat}" Name="ConferenceRoomIdTextBlock" Grid.Row="5" Grid.Column="0" Text="Mødelokale:" TextAlignment="Center"></TextBlock>
+        <ComboBox x:Name="RoomComboBox" Style="{StaticResource NormalComboBox}" Grid.Row="5" Grid.Column="1" DisplayMemberPath="Name" ItemsSource="{Binding AvailableRooms}"></ComboBox>
 
-        <TextBlock Style="{StaticResource TextBlockFormat}" Grid.Row="6" Grid.Column="0" Name="EmployeeIdTextBlock" Text="Medarbejder ID" TextAlignment="Center"></TextBlock>
-        <TextBox Style="{StaticResource StretchTextBox}" Grid.Row="6" Grid.Column="1"  Name="EmployeeIdTextBox"></TextBox>
-        <Grid Grid.Row="7" Grid.ColumnSpan="2">
+        <TextBlock Style="{StaticResource TextBlockFormat}" Grid.Row="6" Grid.Column="0" Name="CustomerCVRTextBlock" Text="Kunde CVR" TextAlignment="Center"></TextBlock>
+        <TextBox Style="{StaticResource StretchTextBox}" Grid.Row="6" Grid.Column="1" Name="CustomerCVRTextBox"></TextBox>
+
+        <TextBlock Style="{StaticResource TextBlockFormat}" Grid.Row="7" Grid.Column="0" Name="EmployeeIdTextBlock" Text="Medarbejder ID" TextAlignment="Center"></TextBlock>
+        <TextBox Style="{StaticResource StretchTextBox}" Grid.Row="7" Grid.Column="1"  Name="EmployeeIdTextBox"></TextBox>
+
+        <!-- Developed by Chris Wohlert -->
+        
+        <TextBlock Style="{StaticResource HeadLine2}" Text="Udstyr" Grid.Row="0" Grid.Column="2"/>
+        <ListBox Name="EquipmentFilterListBox" Grid.Row="1" Grid.Column="2" Grid.RowSpan="6"
+                    HorizontalContentAlignment="Stretch"
+                    Style="{StaticResource ListBoxFormat}"
+                    ItemsSource="{Binding EquipmentFilter}"
+                    >
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Name="EquimentTextBlock" Style="{StaticResource TextBlockFormat}" Text="{Binding}"/>
+                        <Separator></Separator>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBox x:Name="EquipmentTextBox" Grid.Row="7" Grid.Column="2" Style="{StaticResource StretchTextBox}"/>
+        <Grid Grid.Row="8" Grid.Column="2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="AddEquipmentButton" Grid.Row="0" Grid.Column="0" Click="AddEquipmentButton_Click" Content="Tilføj" Style="{StaticResource SmallButton}"/>
+            <Button x:Name="RemoveEquipmentButton" Grid.Row="0" Grid.Column="1" Click="RemoveEquipmentButton_Click" Content="Fjern" Style="{StaticResource SmallButton}"/>
+        </Grid>
+
+        <!-- Chris Wohlert end -->
+        
+        <Grid Grid.Row="8" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
