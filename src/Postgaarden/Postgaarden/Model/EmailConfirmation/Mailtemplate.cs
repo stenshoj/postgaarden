@@ -8,7 +8,7 @@ using System.Net.Mail;
 
 namespace Postgaarden
 {
-    class Mailtemplate
+    public class Mailtemplate
     {
 
         public string UserName { get; set; } 

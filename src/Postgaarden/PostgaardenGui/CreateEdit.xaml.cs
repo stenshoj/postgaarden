@@ -5,6 +5,7 @@ using Postgaarden.Crud.Persons;
 using Postgaarden.Crud.Rooms;
 using Postgaarden.Model.Bookings;
 using Postgaarden.Model.Rooms;
+using PostgaardenMail;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,7 +22,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Xceed.Wpf.Toolkit;
 
-
 namespace PostgaardenGui
 {
 /*
@@ -32,6 +32,7 @@ namespace PostgaardenGui
     /// </summary>
     public partial class CreateEdit : Window
     {
+        private MailBuilder mailBuilder = new MailBuilder();
         private EmployeeCrud empCrud;
         private CustomerCrud cusCrud;
         private EquipmentCrud equiCrud;
@@ -91,7 +92,8 @@ namespace PostgaardenGui
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void OKButton_Click(object sender, RoutedEventArgs e)
+
+        async private void OKButton_Click(object sender, RoutedEventArgs e)
         {
             switch (createEdit.ToUpper())
             {
@@ -108,6 +110,10 @@ namespace PostgaardenGui
                     booking.Price = Convert.ToDouble(PriceTextBox.Text);
                     bookingCrud.Create(booking);
                     Bookings.Add(booking);
+                    var mail = mailBuilder.CreateMail(booking);
+                    var mailServer = "smtp.gmail.com";
+                    var smtpHandler = new SmtpMailHandler(mail, mailServer);
+                    await smtpHandler.SendMailAsync();
                     break;
                 case "EDIT":
                     booking = Booking;
