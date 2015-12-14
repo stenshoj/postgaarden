@@ -110,7 +110,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mail\MailBuilder.cs" />
-    <Compile Include="Model\EmailConfirmation\Mailtemplate.cs" />
     <Compile Include="Model\Bookings\Booking.cs" />
     <Compile Include="Crud\Crud.cs" />
     <Compile Include="Connection\DatabaseConnection.cs" />
@@ -186,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Crud\EmailConfirmation\" />
+    <Folder Include="Model\EmailConfirmation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.98.1\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.98.1\build\net451\System.Data.SQLite.Core.targets')" />

@@ -40,16 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MailBuilder.cs" />
     <Compile Include="Mailtemplate.cs" />
     <Compile Include="SmtpMailHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Postgaarden\Postgaarden.csproj">
-      <Project>{4622de7f-c38e-46eb-a392-97dc38fb2a4b}</Project>
-      <Name>Postgaarden</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

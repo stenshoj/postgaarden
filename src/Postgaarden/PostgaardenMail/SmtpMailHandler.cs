@@ -43,6 +43,8 @@ namespace PostgaardenMail
                 Body = Mail.Body + "\n\n" + Mail.Signature
             };
 
+            message.IsBodyHtml = true;
+
             await client.SendMailAsync(message);
 
             // Release the resources used by the MailMessage

@@ -3,6 +3,7 @@ using Postgaarden.Connection.Sqlite;
 using Postgaarden.Crud.Equipments;
 using Postgaarden.Crud.Persons;
 using Postgaarden.Crud.Rooms;
+using Postgaarden.Mail;
 using Postgaarden.Model.Bookings;
 using Postgaarden.Model.Rooms;
 using PostgaardenMail;
