@@ -42,5 +42,11 @@ namespace Postgaarden.Model.Users
             }
             return false;
         }
+
+        public bool IsAdministrator(User user)
+        {
+            var crudUser = UserCrud.Read(user);
+            return crudUser.IsAdministrator;
+        }
     }
 }

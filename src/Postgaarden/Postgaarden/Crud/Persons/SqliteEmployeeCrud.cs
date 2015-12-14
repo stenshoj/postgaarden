@@ -20,7 +20,7 @@ namespace Postgaarden.Crud.Persons
         public override void Create(Employee entry)
         {
             //Creates a new employee with an Autoincrementet employee id
-            DBConnection.ExecuteQuery($"INSERT INTO Employee (Id, Name, Email) VALUES ({entry.Id}, {entry.Name}, {entry.EmailAddress})");
+            DBConnection.ExecuteQuery($"INSERT INTO Employee (Id, Name, Email) VALUES ('{entry.Id}', '{entry.Name}', '{entry.EmailAddress}')");
         }
 
         public override void Delete(Employee entry)
@@ -36,7 +36,7 @@ namespace Postgaarden.Crud.Persons
             //Goes through a foreach loop to add all the employees to the 'employees' list to be read
             foreach (var row in rows)
             {
-                Employee e = new Employee { Id = (int)row.ElementAt(0), Name = row.ElementAt(1).ToString(), EmailAddress = row.ElementAt(2).ToString() };
+                Employee e = new Employee { Id = Convert.ToInt32(row.ElementAt(0)), Name = row.ElementAt(1).ToString(), EmailAddress = row.ElementAt(2).ToString() };
                 employees.Add(e);
             }
 
@@ -56,7 +56,7 @@ namespace Postgaarden.Crud.Persons
         public override void Update(Employee entry)
         {
             //Updates an employee based on the id given when the method is called
-            DBConnection.ExecuteQuery($"UPDATE Employee SET Name={entry.Name}, Email={entry.EmailAddress} WHERE Id={entry.Id}");
+            DBConnection.ExecuteQuery($"UPDATE Employee SET Name='{entry.Name}', Email='{entry.EmailAddress}' WHERE Id={entry.Id}");
         }
 
         #region Developed By Chris Wohlert

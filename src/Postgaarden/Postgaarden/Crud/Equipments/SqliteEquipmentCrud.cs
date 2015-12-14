@@ -54,7 +54,7 @@ namespace Postgaarden.Crud.Equipments
         {
             var equipmentObjects = DBConnection.ExecuteQuery("SELECT Id,Name FROM Equipment;");
 
-            return equipmentObjects.Select(o => new Equipment((string)o.ElementAt(1)) {Id = (int)o.ElementAt(0)});
+            return equipmentObjects.Select(o => new Equipment((string)o.ElementAt(1)) {Id = Convert.ToInt32(o.ElementAt(0))});
         }
 
         /// <summary>
@@ -85,6 +85,11 @@ namespace Postgaarden.Crud.Equipments
             return new Equipment((string)readReturn.ElementAt(1)) { Id = (int)readReturn.ElementAt(0) };
         }
 
+        /// <summary>
+        /// Updates the specified equipment.
+        /// </summary>
+        /// <param name="equipment">The equipment.</param>
+        /// <param name="room">The room.</param>
         public override void Update(Equipment equipment ,Room room)
         {
             DBConnection.ExecuteQuery($"UPDATE Equipment SET ConferenceRoomId = {room.Id} WHERE Id = {equipment.Id};");
@@ -96,7 +101,7 @@ namespace Postgaarden.Crud.Equipments
         /// <param name="entry">The entry.</param>
         public override void Update(Equipment entry)
         {
-            DBConnection.ExecuteQuery($"UPDATE Equipment SET Name = '{entry.Name}';");
+            DBConnection.ExecuteQuery($"UPDATE Equipment SET Name = '{entry.Name}' WHERE Id = {entry.Id};");
         }
     }
 }

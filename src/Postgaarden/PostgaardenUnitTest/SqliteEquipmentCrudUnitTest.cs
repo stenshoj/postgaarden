@@ -193,7 +193,7 @@ namespace PostgaardenUnitTest
 
             crud.Update(equipment);
 
-            Assert.AreEqual("UPDATE Equipment SET Name = 'F16 Fighting Falcon';", sql);
+            Assert.AreEqual("UPDATE Equipment SET Name = 'F16 Fighting Falcon' WHERE Id = 1;", sql);
         }
     }
 }

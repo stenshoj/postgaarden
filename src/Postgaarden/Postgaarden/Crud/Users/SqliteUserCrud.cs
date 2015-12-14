@@ -19,6 +19,7 @@ namespace Postgaarden.Crud.Users
             DBConnection = connection;
 
             users = new List<User>();
+            users.Add(new User("4507", "admin", true));
             users.Add(new User("53154", "LoneWolf88"));
             users.Add(new User("64856", "Password1"));
             users.Add(new User("153153", "P@ssw0rd"));
@@ -48,7 +49,8 @@ namespace Postgaarden.Crud.Users
 
         public override void Update(User entry)
         {
-
+            // UnitTest this
+            DBConnection.ExecuteQuery($"UPDATE User SET Password = '{entry.Password}' IsAdministrator = '{entry.IsAdministrator}'");
         }
     }
 }
