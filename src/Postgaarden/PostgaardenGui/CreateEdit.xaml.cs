@@ -71,7 +71,7 @@ namespace PostgaardenGui
             }
         }
 
-        private void OKButton_Click(object sender, RoutedEventArgs e)
+        async private void OKButton_Click(object sender, RoutedEventArgs e)
         {
             
             
@@ -93,7 +93,7 @@ namespace PostgaardenGui
                     var mail = mailBuilder.CreateMail(booking);
                     var mailServer = "smtp.gmail.com";
                     var smtpHandler = new SmtpMailHandler(mail, mailServer);
-                    smtpHandler.SendMail();
+                    await smtpHandler.SendMailAsync();
                     break;
                 case "EDIT":
                     booking = Booking;

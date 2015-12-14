@@ -13,7 +13,7 @@ namespace PostgaardenMail
 {
     public class MailBuilder
     {
-
+        //Created By Jens Kloster with help of Martin
 
         public MailBuilder()
         {
@@ -29,7 +29,6 @@ namespace PostgaardenMail
             }
             Mailtemplate mail = new Mailtemplate();
             mail.Receiver = "postgaardentest@gmail.com";
-            //mail.Receiver = booking.Employee.EmailAddress;
             mail.Sender = "thismail@gmail.com";
             mail.Subject = "Faktura for betaling til hotel Postgaarden";
             mail.Body = "<h1>Hotel Postgaarden booking</h1>";

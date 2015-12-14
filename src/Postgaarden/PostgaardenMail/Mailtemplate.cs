@@ -10,6 +10,7 @@ namespace PostgaardenMail
 {
     public class Mailtemplate
     {
+        //Created by Jens Kloster
 
         public string UserName { get; set; } 
         public string Password { get; set; }

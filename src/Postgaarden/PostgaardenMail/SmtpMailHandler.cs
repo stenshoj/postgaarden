@@ -23,7 +23,7 @@ namespace PostgaardenMail
         /// <summary>
         /// Sends an email using Google's SMTP server
         /// </summary>
-        public void SendMail()
+        async public Task SendMailAsync()
         {
             // Establish server connection
             var client = new SmtpClient
@@ -43,7 +43,7 @@ namespace PostgaardenMail
                 Body = Mail.Body + "\n\n" + Mail.Signature
             };
 
-            client.Send(message);
+            await client.SendMailAsync(message);
 
             // Release the resources used by the MailMessage
             message.Dispose();
