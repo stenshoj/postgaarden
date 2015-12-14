@@ -1,0 +1,55 @@
+﻿<Window x:Class="PostgaardenGui.Administration.Gui.CreateRoomWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PostgaardenGui.Administration.Gui"
+        mc:Ignorable="d"
+        Height="340"
+        Width="400"
+        Title="Opret nyt lokale"
+        Loaded="CreateRoomWindow_OnLoaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Style="{StaticResource TextBlockFormat}" Text="Lokalenummer:"></TextBlock>
+                    <TextBlock Style="{StaticResource TextBlockFormat}" Text="Kapacitet:"></TextBlock>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBox Name="RoomIdTextBox" Style="{StaticResource StretchTextBox}" Text="{Binding Path=NewConferenceRoom.Id}"></TextBox>
+                    <TextBox Name="RoomSizeTextBox" Style="{StaticResource StretchTextBox}" Text="{Binding Path=NewConferenceRoom.Size}"></TextBox>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Style="{StaticResource HeadLine3}" Text="Udstyr"></TextBlock>
+            <TextBlock Style="{StaticResource TextBlockFormat}" Text="(Hold CTRL for at vælge flere)" FontSize="10"></TextBlock>
+        </StackPanel>
+
+        <ListView Name="EquipmentListView" Grid.Row="1" Style="{StaticResource ListViewFormat}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="24" Header="Id" DisplayMemberBinding="{Binding Id}"></GridViewColumn>
+                    <GridViewColumn Width="240" Header="Navn" DisplayMemberBinding="{Binding Name}"></GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Name="OkButton" Style="{StaticResource NormalButton}" Content="OK" IsDefault="True" Click="OkButton_OnClick"></Button>
+            <Button Name="CancelButton" Style="{StaticResource NormalButton}" Content="Annuller" IsCancel="True"></Button>
+        </StackPanel>
+    </Grid>
+</Window>

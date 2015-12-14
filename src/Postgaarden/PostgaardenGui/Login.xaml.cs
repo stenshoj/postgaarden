@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PostgaardenGui.Administration.Gui;
 
 namespace PostgaardenLogin
 {
@@ -39,8 +40,16 @@ namespace PostgaardenLogin
             User user = new User(usernameTextbox.Text, passwordTextbox.Password);
             if (handler.Login(user))
             {
-                new MainWindow().Show();
-                this.Close();
+                if (handler.IsAdministrator(user))
+                {
+                    new AdministrationWindow().Show();
+                    this.Close();
+                }
+                else
+                {
+                    new MainWindow().Show();
+                    this.Close();
+                }
             }
             else
             {

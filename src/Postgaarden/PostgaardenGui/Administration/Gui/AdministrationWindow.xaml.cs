@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,36 +15,64 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Postgaarden.Connection.Sqlite;
 using Postgaarden.Crud.Equipments;
+using Postgaarden.Crud.Persons;
 using Postgaarden.Crud.Rooms;
+using Postgaarden.Crud.Users;
+using Postgaarden.Model.Persons;
 using Postgaarden.Model.Rooms;
+using Postgaarden.Model.Users;
 
 namespace PostgaardenGui.Administration.Gui
 {
+    /*
+        Developed by Martin Hansen
+    */
+
     /// <summary>
     /// Interaction logic for AdministrationWindow.xaml
     /// </summary>
     public partial class AdministrationWindow : Window
     {
-        RoomHandler roomHandler;
-
-        public ObservableCollection<string> EquipmentFiltlerObservableCollection { get; set; } = new ObservableCollection<string>();
-        public ObservableCollection<Room> RoomObservableCollection { get; set; } = new ObservableCollection<Room>();
-
         public AdministrationWindow()
         {
             InitializeComponent();
 
             var connection = SqliteDatabaseConnection.GetInstance(Properties.Settings.Default.Postgaarden);
             var equipmentCrud = new SqliteEquipmentCrud(connection);
-            var roomCrud = new SqliteRoomCrud(connection, equipmentCrud);
+            roomCrud = new SqliteRoomCrud(connection, equipmentCrud);
             roomHandler = new RoomHandler(roomCrud);
+            userCrud = new SqliteUserCrud(connection);
+            employeeCrud = new SqliteEmployeeCrud(connection);
         }
 
-        private void RoomOverviewWindow_OnLoaded(object sender, RoutedEventArgs e)
+        private readonly RoomHandler roomHandler;
+        private readonly SqliteRoomCrud roomCrud;
+        private readonly SqliteEmployeeCrud employeeCrud;
+        private readonly SqliteUserCrud userCrud;
+
+        public ObservableCollection<string> EquipmentFiltlerObservableCollection { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<Room> RoomObservableCollection { get; set; } = new ObservableCollection<Room>();
+        public ObservableCollection<User> UserObservableCollection { get; set; }
+        public ObservableCollection<Employee> EmployeeObservableCollection { get; set; }
+
+        private void CancelButton_OnClick(object sender, RoutedEventArgs e)
         {
-
+            var result = MessageBox.Show(
+                "Vil du fortsætte til hovedvinduet idet du lukker?", "Advarsel",
+                MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    new MainWindow().Show();
+                    this.Close();
+                    break;
+                case MessageBoxResult.No:
+                    this.Close();
+                    break;
+            }
         }
 
+        #region Rooms Meethods
 
         private void AddFilterButton_OnClick(object sender, RoutedEventArgs e)
         {
@@ -74,5 +103,134 @@ namespace PostgaardenGui.Administration.Gui
             RoomObservableCollection = new ObservableCollection<Room>(sizeRooms.Intersect(equipmentRooms));
             RoomListBox.ItemsSource = RoomObservableCollection;
         }
+
+        private void CreateRoomButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var createRoomWindow = new CreateRoomWindow();
+
+            if (createRoomWindow.ShowDialog() != true) return;
+            roomCrud.Create(createRoomWindow.ConferenceRoom);
+            RoomObservableCollection.Add(createRoomWindow.ConferenceRoom);
+        }
+
+        private void EditRoomButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var createRoomWindow = new CreateRoomWindow((ConferenceRoom)RoomListBox.SelectedItem);
+
+            if (createRoomWindow.ShowDialog() != true) return;
+            roomCrud.Update(createRoomWindow.ConferenceRoom);
+
+            var view = CollectionViewSource.GetDefaultView(RoomObservableCollection);
+            view.Refresh();
+        }
+
+        private void DeleteRoomButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var items = RoomListBox.SelectedItems.Cast<object>().ToList();
+
+            var warningMessage = items.Count > 1 ? "Er du sikker på at du vil slette de markerede lokaler?" : "Er du sikker på at du vil slette dette lokale?";
+
+            var result = MessageBox.Show(warningMessage, "Advarsel", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes) return;
+            foreach (var item in items)
+            {
+                roomCrud.Delete((ConferenceRoom)item);
+                RoomObservableCollection.Remove((ConferenceRoom)item);
+            }
+        }
+
+        private void RoomListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DeleteRoomButton.IsEnabled = RoomListBox.SelectedItem != null;
+            var selected = RoomListBox.SelectedItems.Count;
+            DeleteRoomButton.Content = selected > 1 ? $"Slet ({selected})" : "Slet";
+            EditRoomButton.IsEnabled = selected == 1;
+        }
+
+        #endregion
+
+        #region Employees Methods
+
+        private void EmployeesTabItem_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            EmployeeObservableCollection = new ObservableCollection<Employee>(employeeCrud.Read());
+        }
+
+        private void CreateEmployeeButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var createEmployeeWindow = new CreateEmployeeWindow();
+
+            if (createEmployeeWindow.ShowDialog() != true) return;
+            employeeCrud.Create(createEmployeeWindow.Employee);
+            EmployeeObservableCollection.Add(createEmployeeWindow.Employee);
+        }
+
+        private void EditEmployeeButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var createEmployeeWindow = new CreateEmployeeWindow((Employee)EmployeeListView.SelectedItem);
+
+            if (createEmployeeWindow.ShowDialog() != true) return;
+            employeeCrud.Update(createEmployeeWindow.Employee);
+
+            var view = CollectionViewSource.GetDefaultView(EmployeeObservableCollection);
+            view.Refresh();
+        }
+
+        private void DeleteEmployeeButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var items = EmployeeListView.SelectedItems.Cast<object>().ToList();
+
+            var warningMessage = items.Count > 1 ? "Er du sikker på at du vil slette de markerede medarbejdere?" : "Er du sikker på at du vil slette denne medarbejder?";
+
+            var result = MessageBox.Show(warningMessage, "Advarsel", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes) return;
+            foreach (var item in items)
+            {
+                employeeCrud.Delete((Employee)item);
+                EmployeeObservableCollection.Remove((Employee)item);
+            }
+        }
+
+        private void EmployeeListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DeleteEmployeeButton.IsEnabled = EmployeeListView.SelectedItem != null;
+            var selected = EmployeeListView.SelectedItems.Count;
+            DeleteEmployeeButton.Content = selected > 1 ? $"Slet ({selected})" : "Slet";
+            EditEmployeeButton.IsEnabled = selected == 1;
+        }
+
+        #endregion
+
+        #region Users Methods
+
+        private void SetAdministratorCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            ApplyButton.IsEnabled = true;
+        }
+
+        private void ApplyButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            // Implement this
+            /*
+            var dataBaseUsers = new ObservableCollection<User>(userCrud.Read());
+            var updateUsers = dataBaseUsers.Intersect(UserObservableCollection);
+            foreach (var user in updateUsers)
+            {
+                userCrud.Update(user);
+            }
+            */
+
+            ApplyButton.IsEnabled = false;
+        }
+
+        private void UsersTabItem_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            UserObservableCollection = new ObservableCollection<User>(userCrud.Read());
+            DataContext = this;
+        }
+
+        #endregion
     }
 }
