@@ -56,6 +56,11 @@ namespace PostgaardenGui.Administration.Gui
         public ObservableCollection<User> UserObservableCollection { get; set; }
         public ObservableCollection<Employee> EmployeeObservableCollection { get; set; }
 
+        /// <summary>
+        /// Handles the OnClick event of the CancelButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void CancelButton_OnClick(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show(
@@ -75,27 +80,52 @@ namespace PostgaardenGui.Administration.Gui
 
         #region Rooms Meethods
 
+        /// <summary>
+        /// Handles the OnClick event of the AddFilterButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void AddFilterButton_OnClick(object sender, RoutedEventArgs e)
         {
             EquipmentFiltlerObservableCollection.Add(FilterTextTextBox.Text);
             FilterTextTextBox.Text = "";
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the RemoveFilterButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void RemoveFilterButton_OnClick(object sender, RoutedEventArgs e)
         {
             EquipmentFiltlerObservableCollection.Remove((string)EquipmentFilterListBox.SelectedItem);
         }
 
+        /// <summary>
+        /// Handles the OnTextChanged event of the FilterTextTextBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Controls.TextChangedEventArgs" /> instance containing the event data.</param>
         private void FilterTextTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             AddFilterButton.IsEnabled = FilterTextTextBox.Text != "";
         }
 
+        /// <summary>
+        /// Handles the OnSelectionChanged event of the EquipmentFilterListBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Controls.SelectionChangedEventArgs" /> instance containing the event data.</param>
         private void EquipmentFilterListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             RemoveFilterButton.IsEnabled = true;
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the SearchEquipmentButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void SearchEquipmentButton_OnClick(object sender, RoutedEventArgs e)
         {
             try
@@ -113,6 +143,11 @@ namespace PostgaardenGui.Administration.Gui
             }
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the CreateRoomButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void CreateRoomButton_OnClick(object sender, RoutedEventArgs e)
         {
             try
@@ -130,6 +165,11 @@ namespace PostgaardenGui.Administration.Gui
             }
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the EditRoomButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void EditRoomButton_OnClick(object sender, RoutedEventArgs e)
         {
             try
@@ -149,6 +189,11 @@ namespace PostgaardenGui.Administration.Gui
             }
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the DeleteRoomButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void DeleteRoomButton_OnClick(object sender, RoutedEventArgs e)
         {
             try
@@ -173,6 +218,11 @@ namespace PostgaardenGui.Administration.Gui
             }
         }
 
+        /// <summary>
+        /// Handles the OnSelectionChanged event of the RoomListBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Controls.SelectionChangedEventArgs" /> instance containing the event data.</param>
         private void RoomListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DeleteRoomButton.IsEnabled = RoomListBox.SelectedItem != null;
@@ -185,11 +235,21 @@ namespace PostgaardenGui.Administration.Gui
 
         #region Employees Methods
 
+        /// <summary>
+        /// Handles the OnLoaded event of the EmployeesTabItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void EmployeesTabItem_OnLoaded(object sender, RoutedEventArgs e)
         {
             EmployeeObservableCollection = new ObservableCollection<Employee>(employeeCrud.Read());
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the CreateEmployeeButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void CreateEmployeeButton_OnClick(object sender, RoutedEventArgs e)
         {
             try
@@ -207,6 +267,11 @@ namespace PostgaardenGui.Administration.Gui
             }
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the EditEmployeeButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void EditEmployeeButton_OnClick(object sender, RoutedEventArgs e)
         {
             try
@@ -226,6 +291,11 @@ namespace PostgaardenGui.Administration.Gui
             }
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the DeleteEmployeeButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void DeleteEmployeeButton_OnClick(object sender, RoutedEventArgs e)
         {
             try
@@ -250,6 +320,11 @@ namespace PostgaardenGui.Administration.Gui
             }
         }
 
+        /// <summary>
+        /// Handles the OnSelectionChanged event of the EmployeeListView control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Controls.SelectionChangedEventArgs" /> instance containing the event data.</param>
         private void EmployeeListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DeleteEmployeeButton.IsEnabled = EmployeeListView.SelectedItem != null;
@@ -262,6 +337,11 @@ namespace PostgaardenGui.Administration.Gui
 
         #region Users Methods
 
+        /// <summary>
+        /// Handles the CheckedChanged event of the SetAdministratorCheckBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void SetAdministratorCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
         {
             ApplyButton.IsEnabled = true;
@@ -269,7 +349,7 @@ namespace PostgaardenGui.Administration.Gui
 
         private void ApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
-            // Implement this
+            // Implement this in a later release
             /*
             var dataBaseUsers = new ObservableCollection<User>(userCrud.Read());
             var updateUsers = dataBaseUsers.Intersect(UserObservableCollection);
@@ -282,6 +362,11 @@ namespace PostgaardenGui.Administration.Gui
             ApplyButton.IsEnabled = false;
         }
 
+        /// <summary>
+        /// Handles the OnLoaded event of the UsersTabItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void UsersTabItem_OnLoaded(object sender, RoutedEventArgs e)
         {
             UserObservableCollection = new ObservableCollection<User>(userCrud.Read());

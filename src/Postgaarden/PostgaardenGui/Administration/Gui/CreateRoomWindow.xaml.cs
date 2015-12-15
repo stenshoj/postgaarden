@@ -19,6 +19,10 @@ using Postgaarden.Model.Rooms;
 
 namespace PostgaardenGui.Administration.Gui
 {
+    /*
+        Developed by Martin Hansen
+    */
+
     /// <summary>
     /// Interaction logic for CreateRoomWindow.xaml
     /// </summary>
@@ -40,6 +44,11 @@ namespace PostgaardenGui.Administration.Gui
         public ConferenceRoom NewConferenceRoom { get; set; }
         public ObservableCollection<Equipment> Equipments { get; set; }
 
+        /// <summary>
+        /// Handles the OnLoaded event of the CreateRoomWindow control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void CreateRoomWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             Equipments = new ObservableCollection<Equipment>(equipmentCrud.Read());
@@ -47,6 +56,11 @@ namespace PostgaardenGui.Administration.Gui
             EquipmentListView.ItemsSource = Equipments;
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the OkButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void OkButton_OnClick(object sender, RoutedEventArgs e)
         {
             var items = EquipmentListView.SelectedItems;

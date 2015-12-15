@@ -15,6 +15,10 @@ using Postgaarden.Model.Persons;
 
 namespace PostgaardenGui.Administration.Gui
 {
+    /*
+        Developed by Martin Hansen
+    */
+
     /// <summary>
     /// Interaction logic for CreateEmployeeWindow1.xaml
     /// </summary>
@@ -47,6 +51,11 @@ namespace PostgaardenGui.Administration.Gui
         public Employee NewEmployee { get; set; }
         public Employee Employee { get; set; }
 
+        /// <summary>
+        /// Handles the OnClick event of the OkButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void OkButton_OnClick(object sender, RoutedEventArgs e)
         {
             Employee = NewEmployee;
