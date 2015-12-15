@@ -12,6 +12,9 @@ using Postgaarden.Crud.Persons;
 
 namespace PostgaardenUnitTest
 {
+    /// <summary>
+    ///     Developed by Morten Christensen
+    /// </summary>
     [TestClass]
     public class SqliteBookingCrudUnitTest
     {
@@ -21,6 +24,9 @@ namespace PostgaardenUnitTest
         Mock<CustomerCrud> customerCrud;
         Mock<EmployeeCrud> employeeCrud;
 
+        /// <summary>
+        /// The booking
+        /// </summary>
         Booking booking = new Booking
         {
             Id = 5,
@@ -30,6 +36,9 @@ namespace PostgaardenUnitTest
             Price = 100
         };
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqliteBookingCrudUnitTest"/> class.
+        /// </summary>
         public SqliteBookingCrudUnitTest()
         {
             booking.SetTime(new DateTime(2000, 1, 1, 12, 00, 00), new DateTime(2001, 1, 1, 12, 00, 00));
@@ -42,6 +51,9 @@ namespace PostgaardenUnitTest
             crud = new SqliteBookingCrud(mock.Object, roomCrud.Object, customerCrud.Object, employeeCrud.Object);
         }
 
+        /// <summary>
+        /// Tests the create to SQL booking.
+        /// </summary>
         [TestMethod]
         public void TestCreateToSqlBooking()
         {
@@ -60,6 +72,9 @@ namespace PostgaardenUnitTest
 
         }
 
+        /// <summary>
+        /// Tests the read all booking.
+        /// </summary>
         [TestMethod]
         public void TestReadAllBooking()
         {
@@ -102,6 +117,9 @@ namespace PostgaardenUnitTest
             Assert.AreEqual(booking.Price, bookings.First().Price);
         }
 
+        /// <summary>
+        /// Tests the read one booking.
+        /// </summary>
         [TestMethod]
         public void TestReadOneBooking()
         {
@@ -144,6 +162,9 @@ namespace PostgaardenUnitTest
             Assert.AreEqual(booking.Price, bookings.Price);
         }
 
+        /// <summary>
+        /// Tests the delete booking.
+        /// </summary>
         [TestMethod]
         public void TestDeleteBooking()
         {
@@ -161,6 +182,9 @@ namespace PostgaardenUnitTest
             Assert.AreEqual($"DELETE FROM Booking WHERE Id={booking.Id};", sql);
         }
 
+        /// <summary>
+        /// Tests the update booking.
+        /// </summary>
         [TestMethod]
         public void TestUpdateBooking()
         {

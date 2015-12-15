@@ -13,6 +13,9 @@ using System.Globalization;
 
 namespace Postgaarden
 {
+    /// <summary>
+    ///     Developed by Morten Christensen
+    /// </summary>
     public class SqliteBookingCrud : BookingCrud
     {
 
@@ -28,12 +31,24 @@ namespace Postgaarden
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the customer crud.
+        /// </summary>
+        /// <value>
+        /// The customer crud.
+        /// </value>
         public CustomerCrud CustomerCrud
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the employee crud.
+        /// </summary>
+        /// <value>
+        /// The employee crud.
+        /// </value>
         public EmployeeCrud EmployeeCrud
         {
             get;
@@ -66,11 +81,19 @@ namespace Postgaarden
             entry.Id = Convert.ToInt32(Id.First().First());
         }
 
+        /// <summary>
+        /// Deletes the specified entry.
+        /// </summary>
+        /// <param name="entry">The entry.</param>
         public override void Delete(Booking entry)
         {
             var Id = DBConnection.ExecuteQuery($"DELETE FROM Booking WHERE Id={entry.Id};");
         }
 
+        /// <summary>
+        /// Reads this instance.
+        /// </summary>
+        /// <returns></returns>
         public override IEnumerable<Booking> Read()
         {
             var rows = DBConnection.ExecuteQuery("SELECT Id, StartTime, EndTime, ConferenceRoomId, EmployeeId, CustomerCVR, Price FROM Booking;");
@@ -94,6 +117,11 @@ namespace Postgaarden
             return bookings;
         }
 
+        /// <summary>
+        /// Reads the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         public override Booking Read(int key)
         {
             var booking = DBConnection.ExecuteQuery($"SELECT Id, StartTime, EndTime, ConferenceRoomId, EmployeeId, CustomerCVR, Price FROM Booking WHERE Id={key};").First();
@@ -111,6 +139,10 @@ namespace Postgaarden
             return b;
         }
 
+        /// <summary>
+        /// Updates the specified entry.
+        /// </summary>
+        /// <param name="entry">The entry.</param>
         public override void Update(Booking entry)
         {
             var Id = DBConnection.ExecuteQuery($"UPDATE Booking SET StartTime='{entry.StartTime.ToString("yyyy-MM-dd hh:MM")}', EndTime='{entry.EndTime.ToString("yyyy-MM-dd hh:mm")}', ConferenceRoomId={entry.Room.Id}, Price={entry.Price}, EmployeeId = {((Employee)entry.Employee).Id}, CustomerCVR = {((Customer)entry.Customer).Cvr} WHERE Id={entry.Id};");
