@@ -21,6 +21,7 @@ using Postgaarden.Crud.Users;
 using Postgaarden.Model.Persons;
 using Postgaarden.Model.Rooms;
 using Postgaarden.Model.Users;
+using System.Diagnostics;
 
 namespace PostgaardenGui.Administration.Gui
 {
@@ -97,46 +98,78 @@ namespace PostgaardenGui.Administration.Gui
 
         private void SearchEquipmentButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var size = SetSizeTextBox.Text.Equals("") ? "0" : SetSizeTextBox.Text;
-            var sizeRooms = new List<Room>(roomHandler.Filter(Convert.ToInt32(size), SetMinimumCheckBox.IsChecked ?? true));
-            var equipmentRooms = new List<Room>(roomHandler.Filter(EquipmentFiltlerObservableCollection));
-            RoomObservableCollection = new ObservableCollection<Room>(sizeRooms.Intersect(equipmentRooms));
-            RoomListBox.ItemsSource = RoomObservableCollection;
+            try
+            {
+                var size = SetSizeTextBox.Text.Equals("") ? "0" : SetSizeTextBox.Text;
+                var sizeRooms = new List<Room>(roomHandler.Filter(Convert.ToInt32(size), SetMinimumCheckBox.IsChecked ?? true));
+                var equipmentRooms = new List<Room>(roomHandler.Filter(EquipmentFiltlerObservableCollection));
+                RoomObservableCollection = new ObservableCollection<Room>(sizeRooms.Intersect(equipmentRooms));
+                RoomListBox.ItemsSource = RoomObservableCollection;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                System.Windows.MessageBox.Show("Venligst kontrollér de indtastede søgekriterier", "Fejl", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void CreateRoomButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var createRoomWindow = new CreateRoomWindow();
+            try
+            {
+                var createRoomWindow = new CreateRoomWindow();
 
-            if (createRoomWindow.ShowDialog() != true) return;
-            roomCrud.Create(createRoomWindow.ConferenceRoom);
-            RoomObservableCollection.Add(createRoomWindow.ConferenceRoom);
+                if (createRoomWindow.ShowDialog() != true) return;
+                roomCrud.Create(createRoomWindow.ConferenceRoom);
+                RoomObservableCollection.Add(createRoomWindow.ConferenceRoom);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                System.Windows.MessageBox.Show("Der opstod en fejl i forsøget på at oprette et rum", "Fejl", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void EditRoomButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var createRoomWindow = new CreateRoomWindow((ConferenceRoom)RoomListBox.SelectedItem);
+            try
+            {
+                var createRoomWindow = new CreateRoomWindow((ConferenceRoom)RoomListBox.SelectedItem);
 
-            if (createRoomWindow.ShowDialog() != true) return;
-            roomCrud.Update(createRoomWindow.ConferenceRoom);
+                if (createRoomWindow.ShowDialog() != true) return;
+                roomCrud.Update(createRoomWindow.ConferenceRoom);
 
-            var view = CollectionViewSource.GetDefaultView(RoomObservableCollection);
-            view.Refresh();
+                var view = CollectionViewSource.GetDefaultView(RoomObservableCollection);
+                view.Refresh();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                System.Windows.MessageBox.Show("Der opstod en fejl i forsøget på at redigere et rum", "Fejl", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void DeleteRoomButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var items = RoomListBox.SelectedItems.Cast<object>().ToList();
-
-            var warningMessage = items.Count > 1 ? "Er du sikker på at du vil slette de markerede lokaler?" : "Er du sikker på at du vil slette dette lokale?";
-
-            var result = MessageBox.Show(warningMessage, "Advarsel", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-            if (result != MessageBoxResult.Yes) return;
-            foreach (var item in items)
+            try
             {
-                roomCrud.Delete((ConferenceRoom)item);
-                RoomObservableCollection.Remove((ConferenceRoom)item);
+                var items = RoomListBox.SelectedItems.Cast<object>().ToList();
+
+                var warningMessage = items.Count > 1 ? "Er du sikker på at du vil slette de markerede lokaler?" : "Er du sikker på at du vil slette dette lokale?";
+
+                var result = MessageBox.Show(warningMessage, "Advarsel", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result != MessageBoxResult.Yes) return;
+                foreach (var item in items)
+                {
+                    roomCrud.Delete((ConferenceRoom)item);
+                    RoomObservableCollection.Remove((ConferenceRoom)item);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                System.Windows.MessageBox.Show("Der opstod en fejl i forsøget på at slette et eller flere rum", "Fejl", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -159,37 +192,61 @@ namespace PostgaardenGui.Administration.Gui
 
         private void CreateEmployeeButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var createEmployeeWindow = new CreateEmployeeWindow();
+            try
+            {
+                var createEmployeeWindow = new CreateEmployeeWindow();
 
-            if (createEmployeeWindow.ShowDialog() != true) return;
-            employeeCrud.Create(createEmployeeWindow.Employee);
-            EmployeeObservableCollection.Add(createEmployeeWindow.Employee);
+                if (createEmployeeWindow.ShowDialog() != true) return;
+                employeeCrud.Create(createEmployeeWindow.Employee);
+                EmployeeObservableCollection.Add(createEmployeeWindow.Employee);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                System.Windows.MessageBox.Show("Der opstod en fejl i forsøget på at oprette en medarbejder", "Fejl", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void EditEmployeeButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var createEmployeeWindow = new CreateEmployeeWindow((Employee)EmployeeListView.SelectedItem);
+            try
+            {
+                var createEmployeeWindow = new CreateEmployeeWindow((Employee)EmployeeListView.SelectedItem);
 
-            if (createEmployeeWindow.ShowDialog() != true) return;
-            employeeCrud.Update(createEmployeeWindow.Employee);
+                if (createEmployeeWindow.ShowDialog() != true) return;
+                employeeCrud.Update(createEmployeeWindow.Employee);
 
-            var view = CollectionViewSource.GetDefaultView(EmployeeObservableCollection);
-            view.Refresh();
+                var view = CollectionViewSource.GetDefaultView(EmployeeObservableCollection);
+                view.Refresh();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                System.Windows.MessageBox.Show("Der opstod en fejl i forsøget på at redigere en medarbejder", "Fejl", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void DeleteEmployeeButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var items = EmployeeListView.SelectedItems.Cast<object>().ToList();
-
-            var warningMessage = items.Count > 1 ? "Er du sikker på at du vil slette de markerede medarbejdere?" : "Er du sikker på at du vil slette denne medarbejder?";
-
-            var result = MessageBox.Show(warningMessage, "Advarsel", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-            if (result != MessageBoxResult.Yes) return;
-            foreach (var item in items)
+            try
             {
-                employeeCrud.Delete((Employee)item);
-                EmployeeObservableCollection.Remove((Employee)item);
+                var items = EmployeeListView.SelectedItems.Cast<object>().ToList();
+
+                var warningMessage = items.Count > 1 ? "Er du sikker på at du vil slette de markerede medarbejdere?" : "Er du sikker på at du vil slette denne medarbejder?";
+
+                var result = MessageBox.Show(warningMessage, "Advarsel", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result != MessageBoxResult.Yes) return;
+                foreach (var item in items)
+                {
+                    employeeCrud.Delete((Employee)item);
+                    EmployeeObservableCollection.Remove((Employee)item);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                System.Windows.MessageBox.Show("Der opstod en fejl i forsøget på at slette en eller flere medarbejdere", "Fejl", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

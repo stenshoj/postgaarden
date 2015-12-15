@@ -24,10 +24,12 @@ namespace Postgaarden.Mail
         public Mailtemplate CreateMail(Booking booking)
         {
             var bookingString = "";
+            bookingString += "<ul>";
             foreach (var e in booking.Room.Equipments)
             {
-                bookingString += e.Name + "\n";
+                bookingString += "<li>" + e.Name + "</li>";
             }
+            bookingString += "</ul>";
             Mailtemplate mail = new Mailtemplate();
             mail.Receiver = booking.Customer.EmailAddress;
             mail.Sender = "Postgaarden@gmail.com";
@@ -37,7 +39,7 @@ namespace Postgaarden.Mail
             Denne mail er til for at bekræfte din ordre </p >";
             mail.Body += "<p>" + booking.Room.Name + @" <br />
             Din booking af rummet starter " + booking.StartTime + ", og slutter " + booking.EndTime + @" <br />
-            Størrelsen på rummet du har bestilt og udstyr i rummet " + bookingString + @"
+            Størrelsen på rummet du har bestilt er op til " + booking.Room.Size + " personer, og udstyr i rummet " + bookingString + @"
             Faktureringsinformation: <br />
             " + ((Customer)booking.Customer).Name + @"<br />
             " + ((Customer)booking.Customer).EmailAddress + @" <br /> 

@@ -10,7 +10,9 @@ using PostgaardenMail;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,9 +27,9 @@ using Xceed.Wpf.Toolkit;
 
 namespace PostgaardenGui
 {
-/*
-    Developed by Christoffer Stenshøj
-*/
+    /*
+        Developed by Christoffer Stenshøj
+    */
     /// <summary>
     /// Interaction logic for Create_Edit.xaml
     /// </summary>
@@ -80,12 +82,13 @@ namespace PostgaardenGui
             {
                 case "CREATE":
                     CreateEditHeadline.Text = "Lav ny booking";
+                    Title = "Opret Booking";
                     break;
                 case "EDIT":
                     CreateEditHeadline.Text = "Opdater en booking";
-                    
+                    Title = "Rediger Booking";
                     break;
-                                                        
+
             }
         }
         /// <summary>
@@ -96,43 +99,63 @@ namespace PostgaardenGui
 
         async private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            switch (createEdit.ToUpper())
+            bool isMailSent = false;
+            try
             {
-                case "CREATE":
-                    Booking booking = new Booking();
-                    if (!booking.SetTime(Convert.ToDateTime(StartTimePicker.Text), Convert.ToDateTime(EndTimePicker.Text)))
-                    {
-                        Xceed.Wpf.Toolkit.MessageBox.Show("Sluttidspunktet skal være senere end starttidspunktet.");
-                        return;
-                    }
-                    booking.Room = roomCrud.Read(((Room)RoomComboBox.SelectedItem).Id);
-                    booking.Customer = cusCrud.Read(CustomerCVRTextBox.Text);
-                    booking.Employee = empCrud.Read(Convert.ToInt32(EmployeeIdTextBox.Text));
-                    booking.Price = Convert.ToDouble(PriceTextBox.Text);
-                    bookingCrud.Create(booking);
-                    Bookings.Add(booking);
-                    var mail = mailBuilder.CreateMail(booking);
-                    var mailServer = "smtp.gmail.com";
-                    var smtpHandler = new SmtpMailHandler(mail, mailServer);
-                    await smtpHandler.SendMailAsync();
-                    break;
-                case "EDIT":
-                    booking = Booking;
-                    if (!booking.SetTime(Convert.ToDateTime(StartTimePicker.Text), Convert.ToDateTime(EndTimePicker.Text)))
-                    {
-                        Xceed.Wpf.Toolkit.MessageBox.Show("Sluttidspunktet skal være senere end starttidspunktet.");
-                        return;
-                    }
-                    booking.Room = roomCrud.Read(Convert.ToInt32(RoomComboBox.Text));
-                    booking.Customer = cusCrud.Read(CustomerCVRTextBox.Text);
-                    booking.Employee = empCrud.Read(Convert.ToInt32(EmployeeIdTextBox.Text));
-                    booking.Price = Convert.ToDouble(PriceTextBox.Text);
-                    bookingCrud.Update(booking);
+                switch (createEdit.ToUpper())
+                {
+                    case "CREATE":
+                        Booking booking = new Booking();
+                        if (!booking.SetTime(Convert.ToDateTime(StartTimePicker.Text), Convert.ToDateTime(EndTimePicker.Text)))
+                        {
+                            Xceed.Wpf.Toolkit.MessageBox.Show("Sluttidspunktet skal være senere end starttidspunktet.");
+                            return;
+                        }
 
-                    break;
+                        booking.Room = roomCrud.Read(((Room)RoomComboBox.SelectedItem).Id);
+                        booking.Customer = cusCrud.Read(CustomerCVRTextBox.Text);
+                        booking.Employee = empCrud.Read(Convert.ToInt32(EmployeeIdTextBox.Text));
+                        booking.Price = Convert.ToDouble(PriceTextBox.Text);
+                        bookingCrud.Create(booking);
+
+
+                        var mail = mailBuilder.CreateMail(booking);
+                        var mailServer = "smtp.gmail.com";
+                        var smtpHandler = new SmtpMailHandler(mail, mailServer);
+                        try
+                        {
+                            await smtpHandler.SendMailAsync();
+                            Bookings.Add(booking);
+                            isMailSent = true;
+                        }
+                        catch
+                        {
+                            System.Windows.MessageBox.Show("Emailen blev ikke sendt", "Fejl", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        break;
+                    case "EDIT":
+                        booking = Booking;
+                        if (!booking.SetTime(Convert.ToDateTime(StartTimePicker.Text), Convert.ToDateTime(EndTimePicker.Text)))
+                        {
+                            Xceed.Wpf.Toolkit.MessageBox.Show("Sluttidspunktet skal være senere end starttidspunktet.");
+                            return;
+                        }
+
+                        booking.Room = roomCrud.Read(Convert.ToInt32(RoomComboBox.Text));
+                        booking.Customer = cusCrud.Read(CustomerCVRTextBox.Text);
+                        booking.Employee = empCrud.Read(Convert.ToInt32(EmployeeIdTextBox.Text));
+                        booking.Price = Convert.ToDouble(PriceTextBox.Text);
+                        bookingCrud.Update(booking);
+                        break;
+                }
             }
-           
-            Close();
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                System.Windows.MessageBox.Show("Der skete en fejl ved behandlingen af bookingen", "Fejl", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            if (isMailSent)
+                Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -179,8 +202,8 @@ namespace PostgaardenGui
 
             if (createEdit.ToUpper().Equals("CREATE"))
                 rooms = bookingHandler.GetAvailableRooms(
-                    StartTimePicker.Value ?? DateTime.Now, 
-                    EndTimePicker.Value ?? DateTime.Now, 
+                    StartTimePicker.Value ?? DateTime.Now,
+                    EndTimePicker.Value ?? DateTime.Now,
                     size,
                     EquipmentFilter
                     ).ToList();

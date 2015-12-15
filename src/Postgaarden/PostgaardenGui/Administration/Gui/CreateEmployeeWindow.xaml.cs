@@ -20,12 +20,27 @@ namespace PostgaardenGui.Administration.Gui
     /// </summary>
     public partial class CreateEmployeeWindow : Window
     {
-        public CreateEmployeeWindow(Employee employee = null)
+        public CreateEmployeeWindow()
         {
             InitializeComponent();
 
-            NewEmployee = employee ?? new Employee();
-            
+            NewEmployee = new Employee();
+
+            Title = "Opret Medarbejder";
+
+            DataContext = this;
+        }
+
+        public CreateEmployeeWindow(Employee employee)
+        {
+            InitializeComponent();
+
+            NewEmployee = employee;
+
+            EmployeeIdTextBox.IsEnabled = false;
+
+            Title = "Rediger Medarbejder";
+
             DataContext = this;
         }
 

@@ -6,7 +6,6 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:PostgaardenGui"
         mc:Ignorable="d"
-        Title="Create_Edit" 
         Width="500"
         MinWidth="500"
         Height="290.4"

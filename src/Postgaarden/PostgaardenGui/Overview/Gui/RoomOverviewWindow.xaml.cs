@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Postgaarden.Crud.Rooms;
 using Postgaarden.Crud.Equipments;
+using System.Diagnostics;
 
 namespace PostgaardenGui.Overview.Gui
 {
@@ -69,11 +70,19 @@ namespace PostgaardenGui.Overview.Gui
 
         private void SearchEquipmentButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var size = SetSizeTextBox.Text.Equals("") ? "0" : SetSizeTextBox.Text;
-            var sizeRooms = new List<Room>(roomHandler.Filter(Convert.ToInt32(size), SetMinimumCheckBox.IsChecked ?? true));
-            var equipmentRooms = new List<Room>(roomHandler.Filter(EquipmentFiltlerObservableCollection));
-            RoomObservableCollection = new ObservableCollection<Room>(sizeRooms.Intersect(equipmentRooms));
-            RoomListBox.ItemsSource = RoomObservableCollection;
+            try
+            {
+                var size = SetSizeTextBox.Text.Equals("") ? "0" : SetSizeTextBox.Text;
+                var sizeRooms = new List<Room>(roomHandler.Filter(Convert.ToInt32(size), SetMinimumCheckBox.IsChecked ?? true));
+                var equipmentRooms = new List<Room>(roomHandler.Filter(EquipmentFiltlerObservableCollection));
+                RoomObservableCollection = new ObservableCollection<Room>(sizeRooms.Intersect(equipmentRooms));
+                RoomListBox.ItemsSource = RoomObservableCollection;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                System.Windows.MessageBox.Show("Kontrollér venligst de indtastede søgekriterier", "Fejl", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

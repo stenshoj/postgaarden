@@ -7,8 +7,7 @@
         mc:Ignorable="d"
         Width="360"
         SizeToContent="Height"
-        ResizeMode="NoResize"
-        Title="Ny medarbejder">
+        ResizeMode="NoResize">
     <StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -23,7 +22,7 @@
             </StackPanel>
 
             <StackPanel Grid.Column="1">
-                <TextBox Style="{StaticResource StretchTextBox}" Text="{Binding Path=NewEmployee.Id}"></TextBox>
+                <TextBox Name="EmployeeIdTextBox" Style="{StaticResource StretchTextBox}" Text="{Binding Path=NewEmployee.Id}"></TextBox>
                 <TextBox Style="{StaticResource StretchTextBox}" Text="{Binding Path=NewEmployee.Name}"></TextBox>
                 <TextBox Style="{StaticResource StretchTextBox}" Text="{Binding Path=NewEmployee.EmailAddress}"></TextBox>
             </StackPanel>
